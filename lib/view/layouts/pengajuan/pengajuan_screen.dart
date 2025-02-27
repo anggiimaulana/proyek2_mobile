@@ -110,7 +110,7 @@ class BuatSuratScreen extends StatelessWidget {
       "color": "F6BE05"
     },
     {
-      "title": "Surat Pengantar",
+      "title": "Surat Pengantar Desa",
       "subtitle": "2 Jenis surat",
       "icon": "assets/icons/sp_logo.png",
       "color": "08AB31"
@@ -143,8 +143,8 @@ class BuatSuratScreen extends StatelessWidget {
               child: Text(
                 "Ajukan pembuatan surat yang sesuai kebutuhan Anda. Pilih kategori dibawah ini:",
                 style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
                   color: Colors.black54,
                 ),
                 textAlign: TextAlign.center,
@@ -158,7 +158,7 @@ class BuatSuratScreen extends StatelessWidget {
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 0.72,
+                childAspectRatio: 0.77,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
               ),
@@ -214,14 +214,14 @@ class SuratCard extends StatelessWidget {
           children: [
             // Kotak ikon (persegi panjang ke bawah)
             Container(
-              width: size.width * 0.22,
-              height: size.height * 0.11,
+              width: size.width * 0.20,
+              height: size.height * 0.10,
               decoration: BoxDecoration(
                 color: bgColor,
                 borderRadius: BorderRadius.circular(25),
               ),
               child: Center(
-                child: Image.asset(iconPath, width: 50, height: 50),
+                child: Image.asset(iconPath, width: 45, height: 45),
               ),
             ),
             SizedBox(height: size.height * 0.01),
@@ -229,18 +229,19 @@ class SuratCard extends StatelessWidget {
               title,
               textAlign: TextAlign.left,
               style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black54),
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: Colors.black54,
+              ),
             ),
-            SizedBox(height: size.height * 0.01),
+            SizedBox(height: size.height * 0.005),
             Row(
               children: [
                 Text(
                   subtitle,
                   style: const TextStyle(color: Colors.black54),
                 ),
-                const Icon(Icons.chevron_right, color: Colors.black54),
+                const Icon(Icons.chevron_right, color: Colors.black45),
               ],
             ),
           ],
