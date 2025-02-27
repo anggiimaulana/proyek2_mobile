@@ -8,90 +8,90 @@ class PengajuanScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Header + Tabs
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                // Background Header
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      bottomRight: Radius.circular(0),
-                      bottomLeft: Radius.circular(0),
+    return SafeArea(
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: Stack(
+            children: [
+              Column(
+                children: [
+                  // Header
+                  Container(
+                    decoration: BoxDecoration(
+                      color: fbackgroundColor3,
+                      borderRadius: const BorderRadius.only(
+                        bottomRight: Radius.circular(0),
+                        bottomLeft: Radius.circular(0),
+                      ),
                     ),
-                    color: fbackgroundColor3,
-                  ),
-                  height: size.height * 0.12,
-                  width: double.infinity,
-                  child: const Padding(
-                    padding: EdgeInsets.all(15),
-                    child: Text(
-                      "Pengajuan Surat",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
+                    height: size.height * 0.10,
+                    width: double.infinity,
+                    alignment: Alignment.topLeft,
+                    child: const Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Text(
+                        "Pengajuan Surat",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ),
                   ),
-                ),
+                  SizedBox(
+                      height: size.height *
+                          0.03), // Untuk memberi ruang tab menimpa header
 
-                // Tabs di atas Header
-                Positioned(
-                  top: size.height * 0.080,
-                  left: size.width * 0,
-                  right: size.width * 0,
-                  child: DefaultTabController(
-                    length: 2,
-                    child: Column(
+                  // Tab View
+                  const Expanded(
+                    child: TabBarView(
                       children: [
-                        Container(
-                          height: size.height * 0.06,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(25),
-                                topRight: Radius.circular(25)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 5,
-                                spreadRadius: 2,
-                              ),
-                            ],
-                          ),
-                          child: TabBar(
-                            labelColor: fbackgroundColor4,
-                            unselectedLabelColor: Colors.blueGrey,
-                            indicatorSize: TabBarIndicatorSize.label,
-                            indicatorColor: fbackgroundColor4,
-                            tabs: const [
-                              Tab(text: "Buat Surat"),
-                              Tab(text: "Tracking Surat"),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: size.height * 0.6,
-                          child: const TabBarView(
-                            children: [
-                              BuatSuratScreen(),
-                              TrackingSuratScreen(),
-                            ],
-                          ),
-                        ),
+                        BuatSuratScreen(),
+                        TrackingSuratScreen(),
                       ],
                     ),
                   ),
+                ],
+              ),
+
+              // Tab Bar Menimpa Header
+              Positioned(
+                top: size.height * 0.075, // Setengah masuk ke header
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: size.height * 0.06,
+                  width: size.width,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(25),
+                        topRight: Radius.circular(25)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 5,
+                        spreadRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: TabBar(
+                    labelColor: fbackgroundColor4,
+                    unselectedLabelColor: Colors.blueGrey,
+                    indicatorSize: TabBarIndicatorSize.label,
+                    indicatorColor: fbackgroundColor4,
+                    tabs: const [
+                      Tab(text: "Buat Surat"),
+                      Tab(text: "Tracking Surat"),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -102,9 +102,151 @@ class PengajuanScreen extends StatelessWidget {
 class BuatSuratScreen extends StatelessWidget {
   const BuatSuratScreen({super.key});
 
+  final List<Map<String, String>> suratList = const [
+    {
+      "title": "Surat Keterangan",
+      "subtitle": "6 Jenis surat",
+      "icon": "assets/icons/sk_logo.png",
+      "color": "F6BE05"
+    },
+    {
+      "title": "Surat Pengantar",
+      "subtitle": "2 Jenis surat",
+      "icon": "assets/icons/sp_logo.png",
+      "color": "08AB31"
+    },
+    {
+      "title": "Surat Rekomendasi",
+      "subtitle": "3 Jenis surat",
+      "icon": "assets/icons/sr_logo.png",
+      "color": "6495ED"
+    },
+    {
+      "title": "Pengajuan Surat Lainnya",
+      "subtitle": "8 Jenis surat",
+      "icon": "assets/icons/sl_logo.png",
+      "color": "F6056D"
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("Halaman Buat Surat"));
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          // Tambahkan teks di tengah
+          const Padding(
+            padding: EdgeInsets.only(bottom: 10, top: 5, left: 5, right: 5),
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Ajukan pembuatan surat yang sesuai kebutuhan Anda. Pilih kategori dibawah ini:",
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black54,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10), // Spasi antara teks dan GridView
+
+          // GridView untuk daftar surat
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.72,
+                crossAxisSpacing: 20,
+                mainAxisSpacing: 20,
+              ),
+              itemCount: suratList.length,
+              itemBuilder: (context, index) {
+                final surat = suratList[index];
+                return SuratCard(
+                  title: surat["title"]!,
+                  subtitle: surat["subtitle"]!,
+                  iconPath: surat["icon"]!,
+                  colorHex: surat["color"]!,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SuratCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final String iconPath;
+  final String colorHex;
+
+  const SuratCard({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.iconPath,
+    required this.colorHex,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    Color bgColor = Color(int.parse("0xFF$colorHex"));
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(25),
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 3))
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Kotak ikon (persegi panjang ke bawah)
+            Container(
+              width: size.width * 0.22,
+              height: size.height * 0.11,
+              decoration: BoxDecoration(
+                color: bgColor,
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: Center(
+                child: Image.asset(iconPath, width: 50, height: 50),
+              ),
+            ),
+            SizedBox(height: size.height * 0.01),
+            Text(
+              title,
+              textAlign: TextAlign.left,
+              style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black54),
+            ),
+            SizedBox(height: size.height * 0.01),
+            Row(
+              children: [
+                Text(
+                  subtitle,
+                  style: const TextStyle(color: Colors.black54),
+                ),
+                const Icon(Icons.chevron_right, color: Colors.black54),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
