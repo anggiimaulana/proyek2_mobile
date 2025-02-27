@@ -74,10 +74,10 @@ class _AppMainScreenState extends State<AppMainScreen> {
                 label: "Pengaduan"),
             BottomNavigationBarItem(
                 icon: Icon(
-                  Iconsax.user,
+                  Iconsax.gallery,
                   size: 26,
                 ),
-                label: "Profil"),
+                label: "Berita"),
           ],
         ),
       ),
