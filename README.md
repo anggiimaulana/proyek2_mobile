@@ -34,10 +34,10 @@ git checkout -b anggii
 		git pull origin stagging
 
 
-Tugas: 
-## Anggi -> Pengajuan
-## Bayu -> Pengaduan
-## Vanes -> Bansos
+## Tugas: 
+Anggi -> Pengajuan
+Bayu -> Pengaduan
+Vanes -> Bansos
 
 A new Flutter project.
 
