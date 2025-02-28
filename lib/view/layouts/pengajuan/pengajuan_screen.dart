@@ -137,7 +137,7 @@ class BuatSuratScreen extends StatelessWidget {
         children: [
           // Tambahkan teks di tengah
           const Padding(
-            padding: EdgeInsets.only(bottom: 10, top: 5, left: 5, right: 5),
+            padding: EdgeInsets.only(bottom: 10, top: 10, left: 5, right: 5),
             child: Align(
               alignment: Alignment.center,
               child: Text(
@@ -256,6 +256,211 @@ class TrackingSuratScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text("Halaman Tracking Surat"));
+    final List<Map<String, String>> data = [
+      {
+        'jenis': 'Surat Keterangan Tidak Mampu',
+        'status': 'Diserahkan',
+        'aksi': 'Menunggu'
+      },
+      {
+        'jenis': 'Surat Keterangan Usaha',
+        'status': 'Diproses',
+        'aksi': 'Menunggu'
+      },
+      {
+        'jenis': 'Surat Keterangan Lainnya',
+        'status': 'Ditolak',
+        'aksi': 'Menunggu'
+      },
+      {
+        'jenis': 'Surat Keterangan Status',
+        'status': 'Disetujui',
+        'aksi': 'Download'
+      },
+      {
+        'jenis': 'Surat Keterangan Penghasilan Orang Tua',
+        'status': 'Diserahkan',
+        'aksi': 'Menunggu'
+      },
+      {
+        'jenis': 'Surat Keterangan Belum Menikah',
+        'status': 'Disetujui',
+        'aksi': 'Download'
+      },
+      {
+        'jenis': 'Surat Keterangan Tidak Mampu',
+        'status': 'Ditolak',
+        'aksi': 'Menunggu'
+      },
+      {
+        'jenis': 'Surat Keterangan Usaha',
+        'status': 'Diproses',
+        'aksi': 'Menunggu'
+      },
+    ];
+
+    Color getStatusColor(String status) {
+      switch (status) {
+        case 'Diserahkan':
+          return Colors.amber;
+        case 'Diproses':
+          return Colors.lightBlue;
+        case 'Ditolak':
+          return Colors.red;
+        case 'Disetujui':
+          return Colors.green;
+        default:
+          return Colors.grey;
+      }
+    }
+
+    Color getAksiColor(String aksi) {
+      return aksi == 'Menunggu'
+          ? const Color.fromARGB(255, 98, 174, 209)
+          : Colors.blue;
+    }
+
+    return Center(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(bottom: 20, top: 10, left: 5, right: 5),
+                child: Text(
+                  "Lacak progres pengajuan surat Anda di sini untuk mengetahui status terkini pengajuan Anda.",
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black54,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Table(
+                columnWidths: const {
+                  0: FlexColumnWidth(1.35),
+                  1: FlexColumnWidth(1),
+                  2: FlexColumnWidth(1),
+                },
+                border: TableBorder.all(
+                  borderRadius: const BorderRadius.only(
+                      bottomRight: Radius.circular(14),
+                      bottomLeft: Radius.circular(14)),
+                  color: Colors.black12,
+                ),
+                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                children: [
+                  TableRow(
+                    decoration: BoxDecoration(
+                      color: fbackgroundColor3,
+                    ),
+                    children: const [
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Center(
+                            child: Text(
+                              "Jenis Surat",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Center(
+                            child: Text(
+                              "Status",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      TableCell(
+                        child: Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Center(
+                            child: Text(
+                              "Aksi",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  ...data.map((item) => TableRow(
+                        children: [
+                          TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Text(item['jenis']!),
+                            ),
+                          ),
+                          TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(7.5),
+                              child: Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                  color: getStatusColor(item['status']!),
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    item['status']!,
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          TableCell(
+                            child: Padding(
+                              padding: const EdgeInsets.all(7.5),
+                              child: Container(
+                                padding: const EdgeInsets.all(6),
+                                decoration: BoxDecoration(
+                                  color: getAksiColor(item['aksi']!),
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    item['aksi']!,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
