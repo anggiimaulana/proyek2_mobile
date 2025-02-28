@@ -16,7 +16,6 @@ class _AppMainScreenState extends State<AppMainScreen> {
   final List pages = [
     const AppHomeScreen(),
     const PengajuanScreen(),
-    // Scaffold(),
     Scaffold(),
     Scaffold(),
     Scaffold(),
