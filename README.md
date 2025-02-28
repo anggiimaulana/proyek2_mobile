@@ -14,12 +14,12 @@ git checkout -b anggii
 		
 	- ika ada need to commit dan untracked file
 		git add .
-		git commit -am "update fitur pengiriman barang"
-		git push origin devan
+		git commit -am "pesan"
+		git push origin namaBranch
 
 	- Jika ada need to commit
-		git commit -am "update fitur pengiriman barang"
-		git push origin devan
+		git commit -am "pesan"
+		git push origin namaBranch
 
 		
   ## Cara Pull, dan hanya boleh pull branch stagging
