@@ -1,5 +1,8 @@
 # Proyek 2 - Mobile
 
+## Buat branch baru
+git branch namaKalian
+
 ## Cara push: 
 git checkout -b Namakalian
 
@@ -15,11 +18,11 @@ git checkout -b anggii
 	- ika ada need to commit dan untracked file
 		git add .
 		git commit -am "pesan"
-		git push origin namaBranch
+		git push origin Namakalian
 
 	- Jika ada need to commit
 		git commit -am "pesan"
-		git push origin namaBranch
+		git push origin Namakalian
 
 		
   ## Cara Pull, dan hanya boleh pull branch stagging
