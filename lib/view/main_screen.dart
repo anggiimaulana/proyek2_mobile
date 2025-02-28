@@ -17,7 +17,6 @@ class _AppMainScreenState extends State<AppMainScreen> {
     const AppHomeScreen(),
     const PengajuanScreen(),
     Scaffold(),
-    // Scaffold(),
     Scaffold(),
     Scaffold(),
   ];
