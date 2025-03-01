@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class AppModel {
   final String name, image, description, category;
   final int price;
