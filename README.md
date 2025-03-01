@@ -38,8 +38,8 @@ git checkout -b anggii
 
 
 ## Tugas: 
-	- Anggi -> Pengajuan
-	- Bayu -> Pengaduan
+	- Anggi -> Pengajuan, Home
+	- Bayu -> Pengaduan, Berita
 	- Vanes -> Bansos
 
 A new Flutter project.
