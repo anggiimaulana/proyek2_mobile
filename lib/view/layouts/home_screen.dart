@@ -76,11 +76,6 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      // Container(
-                      //   width: 175,
-                      //   height: 2,
-                      //   color: fbackgroundColor4,
-                      // ),
                     ],
                   ),
                 ],

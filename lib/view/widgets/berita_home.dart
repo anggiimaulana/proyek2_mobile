@@ -17,9 +17,9 @@ class _BeritaHomeState extends State<BeritaHome> {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: List.generate(
-          fashionEcommerce.length,
+          beritaHome.length,
           (index) {
-            final eCommerceItems = fashionEcommerce[index];
+            final berita = beritaHome[index];
             return Padding(
               padding: index == 0
                   ? const EdgeInsets.symmetric(horizontal: 15)
@@ -35,7 +35,7 @@ class _BeritaHomeState extends State<BeritaHome> {
                     InkWell(
                       onTap: () {},
                       child: CurratedItems(
-                        eCommerceItems: eCommerceItems,
+                        beritaItems: berita,
                         size: size,
                       ),
                     ),
