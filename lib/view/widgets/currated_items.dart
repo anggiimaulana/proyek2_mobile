@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:proyek2/models/model.dart';
 
 class CurratedItems extends StatelessWidget {
-  final AppModel eCommerceItems;
+  final AppModel beritaItems;
   final Size size;
   const CurratedItems({
     super.key,
-    required this.eCommerceItems,
+    required this.beritaItems,
     required this.size,
   });
 
@@ -29,7 +29,7 @@ class CurratedItems extends StatelessWidget {
               borderRadius: BorderRadius.circular(25),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(eCommerceItems.image),
+                image: AssetImage(beritaItems.image),
               ),
             ),
             height: 165,
@@ -60,7 +60,7 @@ class CurratedItems extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 5),
                     child: Text(
-                      eCommerceItems.name,
+                      beritaItems.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -71,7 +71,7 @@ class CurratedItems extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    getShortDescription(eCommerceItems.description, 50),
+                    getShortDescription(beritaItems.description, 50),
                     style: const TextStyle(
                       fontWeight: FontWeight.w300,
                       fontSize: 14,
