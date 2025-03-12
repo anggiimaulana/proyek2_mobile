@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyek2/utils/colors.dart';
+import 'package:proyek2/config/colors.dart';
 import 'package:proyek2/view/layouts/pengajuan/buat_surat_screen.dart';
 import 'package:proyek2/view/layouts/pengajuan/tracking_surat_screen.dart';
 

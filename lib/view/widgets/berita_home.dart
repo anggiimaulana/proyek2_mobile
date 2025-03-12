@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyek2/models/model.dart';
+import 'package:proyek2/models/berita_models.dart';
 import 'package:proyek2/view/widgets/currated_items.dart';
 
 class BeritaHome extends StatefulWidget {

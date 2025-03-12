@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:proyek2/utils/colors.dart';
+import 'package:proyek2/config/colors.dart';
 import 'package:proyek2/view/widgets/banner_home.dart';
 
 class MyHeader extends StatelessWidget {
@@ -27,7 +27,6 @@ class MyHeader extends StatelessWidget {
             width: double.infinity,
             child: Column(
               children: [
-                // const SizedBox(height: 5),
                 Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -66,9 +65,7 @@ class MyHeader extends StatelessWidget {
                           ),
                         ],
                       ),
-
                       const Spacer(),
-
                       // Icon dengan Notifikasi
                       Padding(
                         padding: const EdgeInsets.only(
@@ -110,7 +107,6 @@ class MyHeader extends StatelessWidget {
               ],
             ),
           ),
-
           // Banner Menimpa Setengah Header
           Positioned(
             top: size.height * 0.13,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyek2/utils/colors.dart';
+import 'package:proyek2/config/colors.dart';
 import 'package:proyek2/models/surat.dart';
 
 class TrackingSuratScreen extends StatelessWidget {
