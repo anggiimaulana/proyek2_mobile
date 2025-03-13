@@ -7,13 +7,15 @@ class BuatSuratScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.only(left: size.width * 0.05, right: size.width * 0.05),
       child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.only(bottom: 10, top: 10, left: 5, right: 5),
-            child: Align(
+          Padding(
+            padding: EdgeInsets.only(top: size.height * 0.010),
+            child: const Align(
               alignment: Alignment.center,
               child: Text(
                 "Ajukan pembuatan surat yang sesuai kebutuhan Anda. Pilih kategori di bawah ini:",
@@ -26,14 +28,13 @@ class BuatSuratScreen extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: 10),
           Expanded(
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 0.77,
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 20,
+                crossAxisSpacing: 15,
+                mainAxisSpacing: 15,
               ),
               itemCount: suratList.length,
               itemBuilder: (context, index) {
