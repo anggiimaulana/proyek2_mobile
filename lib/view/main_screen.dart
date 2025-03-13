@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:proyek2/utils/colors.dart';
+import 'package:proyek2/config/colors.dart';
 import 'package:proyek2/view/layouts/home_screen.dart';
 import 'package:proyek2/view/layouts/pengajuan/pengajuan_screen.dart';
 

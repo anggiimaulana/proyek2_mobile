@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyek2/utils/colors.dart';
+import 'package:proyek2/config/colors.dart';
 import 'package:proyek2/view/widgets/berita_home.dart';
 import 'package:proyek2/view/widgets/fitur_utama.dart';
 import 'package:proyek2/view/widgets/header_home.dart';
@@ -22,7 +22,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
           children: [
             const MyHeader(),
             SizedBox(
-              height: size.height*0.20,
+              height: size.height * 0.20,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -43,20 +43,13 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      // Container(
-                      //   width: 105,
-                      //   height: 2,
-                      //   color: fbackgroundColor4,
-                      // ),
                     ],
                   ),
                 ],
               ),
             ),
             const FiturUtama(),
-            SizedBox(
-              height: size.height*0.025,
-            ),
+            SizedBox(height: size.height * 0.025),
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 20,
@@ -83,7 +76,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
             ),
             const BeritaHome(),
             SizedBox(
-              height: size.height*0.02,
+              height: size.height * 0.02,
             )
           ],
         ),

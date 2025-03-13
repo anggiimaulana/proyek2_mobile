@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:proyek2/models/model.dart';
+import 'package:proyek2/models/berita_models.dart';
 
 class CurratedItems extends StatelessWidget {
-  final AppModel beritaItems;
+  final Berita beritaItems;
   final Size size;
   const CurratedItems({
     super.key,
