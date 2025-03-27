@@ -62,27 +62,7 @@ final List<SuratModel> suratList = [
     colorHex: "F6BE05",
     route: "/sk_screen",
   ),
-  SuratModel(
-    title: "Surat Pengantar Desa",
-    subtitle: "2 Jenis surat",
-    iconPath: "assets/icons/sp_logo.png",
-    colorHex: "08AB31",
-    route: "/sp_screen",
-  ),
-  SuratModel(
-    title: "Surat Rekomendasi",
-    subtitle: "3 Jenis surat",
-    iconPath: "assets/icons/sr_logo.png",
-    colorHex: "6495ED",
-    route: "/sr_screen",
-  ),
-  SuratModel(
-    title: "Pengajuan Surat Lainnya",
-    subtitle: "8 Jenis surat",
-    iconPath: "assets/icons/sl_logo.png",
-    colorHex: "F6056D",
-    route: "/sl_screen",
-  ),
+
 ];
 
 class PengajuanSk {
