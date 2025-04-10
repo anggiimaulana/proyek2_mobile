@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyek2/screen/home/header_home.dart';
-import 'package:proyek2/utils/colors.dart';
+import 'package:proyek2/style/colors.dart';
 import 'package:proyek2/screen/home/berita_home_widget.dart';
 import 'package:proyek2/screen/home/fitur_utama.dart';
 
