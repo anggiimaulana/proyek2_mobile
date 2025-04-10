@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:proyek2/routes.dart';
-import 'package:proyek2/view/main_screen.dart';
+import 'package:proyek2/screen/main_screen.dart';
+import 'package:proyek2/screen/pengajuan/buat_surat_screen.dart';
+import 'package:proyek2/screen/pengajuan/sk_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +14,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const AppMainScreen(),
+      home: const MainScreen(),
       routes: appRoutes,
     );
   }
 }
+
+final Map<String, WidgetBuilder> appRoutes = {
+  '/buat_surat': (context) => const BuatSuratScreen(),
+  '/sk_screen': (context) => const SkScreen(),
+};
