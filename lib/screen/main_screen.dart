@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:proyek2/screen/home/home_screen.dart';
+import 'package:proyek2/screen/pengajuan/pengajuan_screen.dart';
 import 'package:proyek2/utils/colors.dart';
-import 'package:proyek2/layouts/home_screen.dart';
-import 'package:proyek2/layouts/pengajuan_screen.dart';
+import 'package:iconsax/iconsax.dart';
 
-class BottomNavigationWidgets extends StatefulWidget {
-  const BottomNavigationWidgets({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  State<BottomNavigationWidgets> createState() =>
-      _BottomNavigationWidgetsState();
+  State<MainScreen> createState() =>
+      _MainScreenState();
 }
 
-class _BottomNavigationWidgetsState extends State<BottomNavigationWidgets> {
+class _MainScreenState extends State<MainScreen> {
   int selectedIndex = 0;
   final List pages = [
     const AppHomeScreen(),

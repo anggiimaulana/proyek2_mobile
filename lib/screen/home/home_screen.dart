@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:proyek2/screen/home/header_home.dart';
 import 'package:proyek2/utils/colors.dart';
-import 'package:proyek2/widgets/berita_home.dart';
-import 'package:proyek2/widgets/fitur_utama.dart';
-import 'package:proyek2/widgets/header_home.dart';
+import 'package:proyek2/screen/home/berita_home_widget.dart';
+import 'package:proyek2/screen/home/fitur_utama.dart';
 
 class AppHomeScreen extends StatefulWidget {
   const AppHomeScreen({super.key});

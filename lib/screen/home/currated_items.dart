@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyek2/models/berita_models.dart';
+import 'package:proyek2/data/models/berita_models.dart';
 
 class CurratedItems extends StatelessWidget {
   final Berita beritaItems;
@@ -10,7 +10,6 @@ class CurratedItems extends StatelessWidget {
     required this.size,
   });
 
-  // Fungsi untuk membatasi panjang deskripsi dengan format lebih rapi
   String getShortDescription(String text, int maxLength) {
     return text.length > maxLength
         ? "${text.substring(0, maxLength).trim()}..."

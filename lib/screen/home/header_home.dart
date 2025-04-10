@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:proyek2/screen/home/banner_home.dart';
 import 'package:proyek2/utils/colors.dart';
-import 'package:proyek2/widgets/banner_home.dart';
 
 class MyHeader extends StatelessWidget {
   const MyHeader({super.key});
