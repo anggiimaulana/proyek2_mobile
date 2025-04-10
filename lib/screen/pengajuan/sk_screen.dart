@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyek2/data/models/surat.dart';
-import 'package:proyek2/utils/colors.dart';
+import 'package:proyek2/style/colors.dart';
 import 'package:proyek2/screen/pengajuan/category_sk.dart';
 
 class SkScreen extends StatelessWidget {

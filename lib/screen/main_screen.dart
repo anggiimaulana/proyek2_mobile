@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyek2/screen/home/home_screen.dart';
 import 'package:proyek2/screen/pengajuan/pengajuan_screen.dart';
-import 'package:proyek2/utils/colors.dart';
+import 'package:proyek2/style/colors.dart';
 import 'package:iconsax/iconsax.dart';
 
 class MainScreen extends StatefulWidget {

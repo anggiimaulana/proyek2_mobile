@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:proyek2/utils/colors.dart';
+import 'package:proyek2/style/colors.dart';
 
 class FiturUtama extends StatefulWidget {
   const FiturUtama({super.key});

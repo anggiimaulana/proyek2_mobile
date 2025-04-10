@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyek2/utils/colors.dart';
+import 'package:proyek2/style/colors.dart';
 
 class FormLoginWidget extends StatefulWidget {
   const FormLoginWidget({super.key});

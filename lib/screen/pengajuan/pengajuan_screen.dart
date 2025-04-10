@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:proyek2/screen/pengajuan/buat_surat_screen.dart';
 import 'package:proyek2/screen/pengajuan/tracking_surat_screen.dart';
-import 'package:proyek2/utils/colors.dart';
+import 'package:proyek2/style/colors.dart';
 
 class PengajuanScreen extends StatelessWidget {
   const PengajuanScreen({super.key});
