@@ -18,7 +18,7 @@ class SuratModel {
 final List<SuratModel> suratList = [
   SuratModel(
     title: "Surat Keterangan",
-    subtitle: "6 Jenis surat",
+    subtitle: "9 Jenis surat",
     iconPath: "assets/icons/sk_logo.png",
     colorHex: "F6BE05",
     route: "/sk_screen",

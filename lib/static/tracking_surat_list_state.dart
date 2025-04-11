@@ -1,4 +1,4 @@
-import 'package:proyek2/data/models/pengajuan_surat.dart';
+import 'package:proyek2/data/models/pengajuan/pengajuan_surat_dummy.dart';
 
 sealed class TrackingSuratListState {}
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyek2/screen/pengajuan/surat_card.dart';
-import 'package:proyek2/data/models/surat.dart';
+import 'package:proyek2/data/models/pengajuan/surat/surat_list.dart';
 
 class BuatSuratScreen extends StatelessWidget {
   const BuatSuratScreen({super.key});
