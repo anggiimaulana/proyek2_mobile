@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:proyek2/data/models/surat.dart';
+import 'package:proyek2/data/models/pengajuan/surat/surat_list.dart';
 import 'package:proyek2/style/colors.dart';
 import 'package:proyek2/screen/pengajuan/category_sk.dart';
 
