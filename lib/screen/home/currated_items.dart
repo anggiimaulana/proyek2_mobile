@@ -3,11 +3,9 @@ import 'package:proyek2/data/models/berita/berita_models.dart';
 
 class CurratedItems extends StatelessWidget {
   final Berita beritaItems;
-  final Size size;
   const CurratedItems({
     super.key,
     required this.beritaItems,
-    required this.size,
   });
 
   String getShortDescription(String text, int maxLength) {
@@ -19,7 +17,7 @@ class CurratedItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white, // Background putih
+      color: const Color(0xFFF1F5FF),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,25 +30,11 @@ class CurratedItems extends StatelessWidget {
               ),
             ),
             height: 165,
-            width: size.width * 0.75,
-            child: const Padding(
-              padding: EdgeInsets.all(10),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: CircleAvatar(
-                  radius: 18,
-                  backgroundColor: Colors.black26,
-                  child: Icon(
-                    Icons.favorite_border,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+            width: 280,
           ),
           const SizedBox(height: 7),
           SizedBox(
-            width: size.width * 0.75,
+            width: 280,
             child: Padding(
               padding: const EdgeInsets.only(left: 10, top: 5, right: 10),
               child: Column(

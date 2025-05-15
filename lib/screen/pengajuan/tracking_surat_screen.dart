@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:proyek2/data/models/pengajuan/pengajuan_surat_dummy.dart';
-import 'package:proyek2/data/models/pengajuan/surat/surat_list.dart';
 import 'package:proyek2/style/colors.dart';
 
 class TrackingSuratScreen extends StatelessWidget {

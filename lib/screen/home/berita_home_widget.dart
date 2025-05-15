@@ -12,7 +12,6 @@ class BeritaHome extends StatefulWidget {
 class _BeritaHomeState extends State<BeritaHome> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -25,6 +24,7 @@ class _BeritaHomeState extends State<BeritaHome> {
                   ? const EdgeInsets.symmetric(horizontal: 15)
                   : const EdgeInsets.only(right: 15),
               child: Card(
+                color: const Color(0xFFF1F5FF),
                 elevation: 2,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(25),
@@ -36,7 +36,6 @@ class _BeritaHomeState extends State<BeritaHome> {
                       onTap: () {},
                       child: CurratedItems(
                         beritaItems: berita,
-                        size: size,
                       ),
                     ),
                   ],

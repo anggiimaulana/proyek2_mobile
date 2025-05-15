@@ -30,10 +30,8 @@ class SkScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF1F5FF),
       appBar: AppBar(
         title: const Text(
           "Pengajuan Surat Keterangan",
@@ -48,17 +46,18 @@ class SkScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(
-                top: size.height * 0.025,
-                right: size.width * 0.05,
-                left: size.width * 0.05),
-            child: const Align(
+              top: 20.0,
+              right: 20.0,
+              left: 20.0,
+            ),
+            child: Align(
               alignment: Alignment.center,
               child: Text(
                 "Silahkan pilih surat keterangan yang ingin Anda ajukan!",
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.w400,
                   color: Colors.black54,
                 ),
@@ -71,13 +70,13 @@ class SkScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 25),
               child: GridView.count(
                 crossAxisCount: 3,
-                childAspectRatio: 0.80,
-                crossAxisSpacing: size.width * 0.03,
-                mainAxisSpacing: size.height * 0.02,
+                childAspectRatio: 0.75,
+                crossAxisSpacing: 20.0,
+                mainAxisSpacing: 20.0,
                 children: buildCategoryItems(context),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

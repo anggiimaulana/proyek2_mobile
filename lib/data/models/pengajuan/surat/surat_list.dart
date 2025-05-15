@@ -18,12 +18,11 @@ class SuratModel {
 final List<SuratModel> suratList = [
   SuratModel(
     title: "Surat Keterangan",
-    subtitle: "9 Jenis surat",
+    subtitle: "8 Jenis surat",
     iconPath: "assets/icons/sk_logo.png",
     colorHex: "F6BE05",
     route: "/sk_screen",
   ),
-
 ];
 
 class PengajuanSk {
@@ -53,28 +52,16 @@ final List<PengajuanSk> listCategorySk = [
     route: "/sk_screen/sktmb",
   ),
   PengajuanSk(
-    title: "Surat Keterangan Penghasilan Orang Tua (Beasiswa)",
-    icon: "assets/icons/skpot_icon.png",
-    color: "899EC4",
-    route: "/sk_screen/skpot",
-  ),
-  PengajuanSk(
-    title: "Surat Keterangan Penghasilan (Bantuan)",
-    icon: "assets/icons/skpb_icon.png",
-    color: "BD3D3D",
-    route: "/sk_screen/skpb",
-  ),
-  PengajuanSk(
     title: "Surat Keterangan Tidak Mampu (Sekolah)",
     icon: "assets/icons/sktms_icon.png",
     color: "254379",
     route: "/sk_screen/sktms",
   ),
   PengajuanSk(
-    title: "Surat Keterangan Usaha",
-    icon: "assets/icons/sku_icon.png",
-    color: "3DB35B",
-    route: "/sk_screen/sku",
+    title: "Surat Keterangan Penghasilan Orang Tua",
+    icon: "assets/icons/skpot_icon.png",
+    color: "899EC4",
+    route: "/sk_screen/skpot",
   ),
   PengajuanSk(
     title: "Surat Keterangan Status",
@@ -93,5 +80,11 @@ final List<PengajuanSk> listCategorySk = [
     icon: "assets/icons/skp_icon.png",
     color: "6652A1",
     route: "/sk_screen/skp",
+  ),
+  PengajuanSk(
+    title: "Surat Keterangan Usaha",
+    icon: "assets/icons/sku_icon.png",
+    color: "3DB35B",
+    route: "/sk_screen/sku",
   ),
 ];

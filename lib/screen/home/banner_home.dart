@@ -5,16 +5,14 @@ class MyBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
-      height: size.height * 0.25,
-      width: size.width * 0.90,
+      height: 190, // FIXED height
+      width: 320, // FIXED width
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
         image: const DecorationImage(
-          image: AssetImage(
-              "assets/images/bulak-lor.jpg"), 
-          fit: BoxFit.cover, // Agar gambar penuh
+          image: AssetImage("assets/images/bulak-lor.jpg"),
+          fit: BoxFit.cover, // Tetap biar gambarnya penuh
         ),
       ),
     );
