@@ -16,56 +16,64 @@ class SuratCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    Color bgColor = Color(int.parse("0xFF$colorHex"));
+    final Color bgColor = Color(int.parse("0xFF$colorHex"));
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0xFFF1F5FF),
         borderRadius: BorderRadius.circular(25),
         boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 3))
+          BoxShadow(
+            color: Colors.black38,
+            blurRadius: 6,
+            offset: Offset(0, 3),
+          ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Kotak ikon (persegi panjang ke bawah)
-            Container(
-              width: size.width * 0.20,
-              height: size.height * 0.10,
-              decoration: BoxDecoration(
-                color: bgColor,
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: Center(
-                child: Image.asset(iconPath, width: 45, height: 45),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+              color: bgColor,
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Center(
+              child: Image.asset(
+                iconPath,
+                width: 60,
+                height: 60,
               ),
             ),
-            SizedBox(height: size.height * 0.01),
-            Text(
-              title,
-              textAlign: TextAlign.left,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-                color: Colors.black54,
-              ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
+              color: Colors.black54,
             ),
-            SizedBox(height: size.height * 0.005),
-            Row(
-              children: [
-                Text(
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Text(
                   subtitle,
                   style: const TextStyle(color: Colors.black54),
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const Icon(Icons.chevron_right, color: Colors.black45),
-              ],
-            ),
-          ],
-        ),
+              ),
+              const Icon(
+                Icons.chevron_right,
+                color: Colors.black45,
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

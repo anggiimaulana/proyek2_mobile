@@ -8,12 +8,10 @@ class PengajuanScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFFF1F5FF),
         body: Stack(
           children: [
             Column(
@@ -27,15 +25,13 @@ class PengajuanScreen extends StatelessWidget {
                       bottomLeft: Radius.circular(0),
                     ),
                   ),
-                  height: size.height * 0.17,
+                  height: 130, 
                   width: double.infinity,
                   alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                      left: size.width * 0.05,
-                      top: size.height * 0.065,
-                    ),
-                    child: const Text(
+                  child: const Padding(
+                    padding:
+                        EdgeInsets.only(left: 20.0, top: 50.0),
+                    child: Text(
                       "Pengajuan Surat",
                       style: TextStyle(
                         color: Colors.white,
@@ -45,9 +41,7 @@ class PengajuanScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                    height: size.height *
-                        0.03),
+                const SizedBox(height: 20.0), 
 
                 // Tab View
                 const Expanded(
@@ -60,20 +54,19 @@ class PengajuanScreen extends StatelessWidget {
                 ),
               ],
             ),
-
-            // Tab Bar Menimpa Header
             Positioned(
-              top: size.height * 0.12, // Setengah masuk ke header
+              top: 95, 
               left: 0,
               right: 0,
               child: Container(
-                height: size.height * 0.06,
-                width: size.width,
+                height: 50, 
+                width: double.infinity,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: Color(0xFFF1F5FF),
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25)),
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black12,

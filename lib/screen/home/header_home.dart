@@ -1,19 +1,113 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:proyek2/screen/login/login.dart';
 import 'package:proyek2/screen/home/banner_home.dart';
 import 'package:proyek2/style/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class MyHeader extends StatelessWidget {
-  const MyHeader({super.key});
+class MyHeader extends StatefulWidget {
+  final String? name;
+  const MyHeader({super.key, required this.name});
+
+  @override
+  State<MyHeader> createState() => _MyHeaderState();
+}
+
+class _MyHeaderState extends State<MyHeader> {
+  void _showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+  }
+
+  Future<void> _logout(BuildContext context) async {
+    _showLoadingDialog(context);
+    await Future.delayed(const Duration(seconds: 1));
+
+    final prefs = await SharedPreferences.getInstance();
+    final success = await prefs.clear(); 
+
+    if (mounted) {
+      Navigator.pop(context); // tutup spinner
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const LoginScreen(),
+          settings: const RouteSettings(arguments: "Berhasil logout!"),
+        ),
+      );
+    }
+  }
+
+  Future<void> _confirmLogout() async {
+    final shouldLogout = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        backgroundColor: Colors.white,
+        title: const Row(
+          children: [
+            Icon(Icons.logout, color: Colors.red),
+            SizedBox(width: 10),
+            Text(
+              'Konfirmasi Logout',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+                fontSize: 20,
+              ),
+            ),
+          ],
+        ),
+        content: const Text(
+          'Apakah Anda yakin ingin keluar dari akun?',
+          style:
+              TextStyle(fontSize: 14, color: Color.fromARGB(221, 39, 16, 16)),
+        ),
+        actionsPadding:
+            const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        actions: [
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.grey[800],
+              textStyle: const TextStyle(fontWeight: FontWeight.w500),
+            ),
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Batal'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Logout'),
+          ),
+        ],
+      ),
+    );
+
+    if (shouldLogout == true) {
+      _logout(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    final isLoggedIn = widget.name != null && widget.name!.isNotEmpty;
 
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        // Background Header
         Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.only(
@@ -22,16 +116,15 @@ class MyHeader extends StatelessWidget {
             ),
             color: fbackgroundColor3,
           ),
-          height: size.height * 0.25,
+          height: 190.0,
           width: double.infinity,
           child: Column(
             children: [
               Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: size.width * 0.05, vertical: size.height * 0.05),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 40.0),
                 child: Row(
                   children: [
-                    // Logo
                     Image.asset(
                       "assets/icons/pemda2.png",
                       height: 85,
@@ -41,64 +134,67 @@ class MyHeader extends StatelessWidget {
                       },
                     ),
                     const SizedBox(width: 5),
-
-                    // Nama Desa
                     const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "Desa Bulak Lor",
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
                           ),
                         ),
                         Text(
                           "Kecamatan Jatibarang",
-                          style: TextStyle(fontSize: 13, color: Colors.white),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
                         ),
                         Text(
                           "45273",
-                          style: TextStyle(fontSize: 13, color: Colors.white),
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white,
+                          ),
                         ),
                       ],
                     ),
                     const Spacer(),
-                    // Icon dengan Notifikasi
-                    Padding(
-                      padding: const EdgeInsets.only(
-                        right: 8,
-                      ),
-                      child: Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          const Icon(
-                            Iconsax.notification,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                          Positioned(
-                            right: -2,
-                            top: -5,
-                            child: Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Text(
-                                "3",
-                                style: TextStyle(
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            if (isLoggedIn) {
+                              _confirmLogout();
+                            } else {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const LoginScreen()),
+                              );
+                            }
+                          },
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.logout,
+                                  color: Colors.white, size: 20),
+                              const SizedBox(height: 2),
+                              Text(
+                                isLoggedIn ? 'Logout' : 'Belum Login',
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 12,
-                                  fontWeight: FontWeight.bold,
+                                  height: 1.0,
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -106,12 +202,11 @@ class MyHeader extends StatelessWidget {
             ],
           ),
         ),
-        // Banner Menimpa Setengah Header
-        Positioned(
-          top: size.height * 0.17,
-          left: size.width * 0.05,
-          right: size.width * 0.05,
-          child: const MyBanner(),
+        const Positioned(
+          top: 135.0,
+          left: 20.0,
+          right: 20.0,
+          child: MyBanner(),
         ),
       ],
     );

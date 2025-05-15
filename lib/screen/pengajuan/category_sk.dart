@@ -34,7 +34,7 @@ class CardCategorySk extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         SizedBox(
-          width: 100, // Agar teks tidak terlalu melebar
+          width: 100, 
           height: 50,
           child: Text(
             title,
