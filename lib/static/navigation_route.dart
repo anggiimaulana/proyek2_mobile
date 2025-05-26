@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:proyek2/screen/main_screen.dart';
-import 'package:proyek2/screen/pengajuan/surat/skp_screen.dart';
+import 'package:proyek2/screen/pengajuan/create_surat/skp_screen.dart';
 import 'package:proyek2/screen/pengajuan/sk_screen.dart';
-import 'package:proyek2/screen/pengajuan/surat/sks_screen.dart';
-import 'package:proyek2/screen/pengajuan/surat/skbm_screen.dart';
-import 'package:proyek2/screen/pengajuan/surat/skpot_screen.dart';
-import 'package:proyek2/screen/pengajuan/surat/sktm_beasiswa_screen.dart';
-import 'package:proyek2/screen/pengajuan/surat/sktm_listrik_screen.dart';
-import 'package:proyek2/screen/pengajuan/surat/sktm_sekolah_screen.dart';
-import 'package:proyek2/screen/pengajuan/surat/sku_screen.dart';
+import 'package:proyek2/screen/pengajuan/create_surat/sks_screen.dart';
+import 'package:proyek2/screen/pengajuan/create_surat/skbm_screen.dart';
+import 'package:proyek2/screen/pengajuan/create_surat/skpot_screen.dart';
+import 'package:proyek2/screen/pengajuan/create_surat/sktm_beasiswa_screen.dart';
+import 'package:proyek2/screen/pengajuan/create_surat/sktm_listrik_screen.dart';
+import 'package:proyek2/screen/pengajuan/create_surat/sktm_sekolah_screen.dart';
+import 'package:proyek2/screen/pengajuan/create_surat/sku_screen.dart';
 
 enum NavigationRoute {
   mainRoute("/"),
-  homeRoute("/home"), // Tambahkan ini
+  homeRoute("/home"),
   skRoute("/sk_screen"),
   sktmListrikRoute("/sk_screen/sktml"),
   sktmBeasiswaRoute("/sk_screen/sktmb"),

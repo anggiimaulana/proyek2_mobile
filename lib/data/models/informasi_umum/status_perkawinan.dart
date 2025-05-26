@@ -26,27 +26,19 @@ class StatusPerkawinan {
 class StatusPerkawinanData {
   int id;
   String statusPerkawinan;
-  DateTime createdAt;
-  DateTime updatedAt;
 
   StatusPerkawinanData({
     required this.id,
     required this.statusPerkawinan,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   factory StatusPerkawinanData.fromJson(Map<String, dynamic> json) => StatusPerkawinanData(
         id: json["id"],
         statusPerkawinan: json["status_perkawinan"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "status_perkawinan": statusPerkawinan,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
       };
 }

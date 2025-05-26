@@ -1,6 +1,8 @@
 import 'package:proyek2/data/models/informasi_umum/agama_model.dart';
 import 'package:proyek2/data/models/informasi_umum/hubungan_model.dart';
 import 'package:proyek2/data/models/informasi_umum/jk_model.dart';
+import 'package:proyek2/data/models/informasi_umum/kartu_keluarga_detail.dart';
+import 'package:proyek2/data/models/informasi_umum/kartu_keluarga_model.dart';
 import 'package:proyek2/data/models/informasi_umum/pekerjaan_model.dart';
 import 'package:proyek2/data/models/informasi_umum/status_perkawinan.dart';
 
@@ -30,6 +32,8 @@ class SkStatusModel {
 
 class DataSks {
   int id;
+  KartuKeluarga kkId;
+  Nik nikId;
   Hubungan hubungan;
   String nama;
   String tempatLahir;
@@ -44,6 +48,8 @@ class DataSks {
   DateTime updatedAt;
 
   DataSks({
+    required this.kkId,
+    required this.nikId,
     required this.id,
     required this.hubungan,
     required this.nama,
@@ -61,6 +67,8 @@ class DataSks {
 
   factory DataSks.fromJson(Map<String, dynamic> json) => DataSks(
         id: json["id"],
+        kkId: KartuKeluarga.fromJson(json["kk_id"]),
+        nikId: Nik.fromJson(json["nik_id"]),
         hubungan: json["hubungan"],
         nama: json["nama"],
         tempatLahir: json["tempat_lahir"],
@@ -77,6 +85,8 @@ class DataSks {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "kk_id": kkId.toJson(),
+        "nik_id": nikId.toJson(),
         "hubungan": hubungan,
         "nama": nama,
         "tempat_lahir": tempatLahir,

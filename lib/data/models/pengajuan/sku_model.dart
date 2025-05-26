@@ -1,5 +1,7 @@
 import 'package:proyek2/data/models/informasi_umum/hubungan_model.dart';
 import 'package:proyek2/data/models/informasi_umum/jk_model.dart';
+import 'package:proyek2/data/models/informasi_umum/kartu_keluarga_detail.dart';
+import 'package:proyek2/data/models/informasi_umum/kartu_keluarga_model.dart';
 import 'package:proyek2/data/models/informasi_umum/pekerjaan_model.dart';
 import 'package:proyek2/data/models/informasi_umum/status_perkawinan.dart';
 
@@ -31,7 +33,8 @@ class DataSku {
   int id;
   Hubungan hubungan;
   String nama;
-  String nik;
+  KartuKeluarga kkId;
+  Nik nikId;
   String tempatLahir;
   DateTime tanggalLahir;
   JenisKelamin jk;
@@ -47,7 +50,8 @@ class DataSku {
     required this.id,
     required this.hubungan,
     required this.nama,
-    required this.nik,
+    required this.kkId,
+    required this.nikId,
     required this.tempatLahir,
     required this.tanggalLahir,
     required this.jk,
@@ -64,7 +68,8 @@ class DataSku {
         id: json["id"],
         hubungan: json["hubungan"],
         nama: json["nama"],
-        nik: json["nik"],
+        kkId: KartuKeluarga.fromJson(json["kk_id"]),
+        nikId: Nik.fromJson(json["nik_id"]),
         tempatLahir: json["tempat_lahir"],
         tanggalLahir: DateTime.parse(json["tanggal_lahir"]),
         jk: json["jk"],
@@ -81,7 +86,8 @@ class DataSku {
         "id": id,
         "hubungan": hubungan,
         "nama": nama,
-        "nik": nik,
+        "kk_id": kkId.toJson(),
+        "nik_id": nikId.toJson(),
         "tempat_lahir": tempatLahir,
         "tanggal_lahir":
             "${tanggalLahir.year.toString().padLeft(4, '0')}-${tanggalLahir.month.toString().padLeft(2, '0')}-${tanggalLahir.day.toString().padLeft(2, '0')}",

@@ -2,37 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:proyek2/provider/pengajuan/data/data_provider.dart';
-import 'package:proyek2/provider/pengajuan/sktm_beasiswa_provider.dart';
+import 'package:proyek2/provider/pengajuan/data/data_provider2.dart';
+import 'package:proyek2/provider/pengajuan/kartu_keluarga_provider.dart';
+import 'package:proyek2/provider/pengajuan/sktm_listrik_provider.dart';
 import 'package:proyek2/style/colors.dart';
 
-class SktmBeasiswaScreen extends StatefulWidget {
-  const SktmBeasiswaScreen({super.key});
+class SktmListrikScreen extends StatefulWidget {
+  const SktmListrikScreen({super.key});
 
   @override
-  State<SktmBeasiswaScreen> createState() => _SktmBeasiswaScreenState();
+  State<SktmListrikScreen> createState() => _SktmListrikScreenState();
 }
 
-class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
+class _SktmListrikScreenState extends State<SktmListrikScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isSubmitting = false;
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => Provider.of<DataProvider>(context, listen: false)
-        .loadAllAndCacheData());
+    Future.microtask(() {
+      // Load data provider
+      Provider.of<DataProvider>(context, listen: false).loadAllAndCacheData();
+
+      // Load KK data
+      Provider.of<KartuKeluargaProvider>(context, listen: false)
+          .loadFromCache();
+      if (Provider.of<KartuKeluargaProvider>(context, listen: false).data ==
+          null) {
+        Provider.of<KartuKeluargaProvider>(context, listen: false)
+            .fetchAndCacheKK();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<SktmBeasiswaProvider, DataProvider>(
-      builder: (context, provider, dataProvider, _) => Scaffold(
+    return Consumer3<SktmListrikProvider, DataProvider, KartuKeluargaProvider>(
+      builder: (context, provider, dataProvider, kkProvider, _) => Scaffold(
         backgroundColor: const Color(0xFFF1F5FF),
         appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            'SKTM - Beasiswa',
+            'SKTM - Listrik',
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
           ),
@@ -55,10 +67,14 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  buildLabel('Hubungan pemilik akun dengan Pengaju', isRequired: true),
+                  buildLabel('NIK', isRequired: true),
+                  kkProvider.isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : buildDropdownNIK(dataProvider, provider, kkProvider),
+                  buildLabel('Status dalam Keluarga', isRequired: true),
                   buildDropdownDynamic(
-                    selectedValue: provider.selectedHubunganId,
-                    onChanged: provider.setSelectedHubunganId,
+                    selectedValue: provider.selectedHubunganIdCreate,
+                    onChanged: provider.setSelectedHubunganIdCreate,
                     items: dataProvider.hubunganList
                         .map((e) => DropdownMenuItem(
                               value: e.id,
@@ -66,36 +82,19 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
                             ))
                         .toList(),
                   ),
-                  buildLabel('Nama Lengkap Anak', isRequired: true),
+                  buildLabel('Nama Lengkap', isRequired: true),
                   buildTextField(
-                      'Masukkan nama lengkap anak', provider.namaAnakController),
-                  buildLabel('Tempat Lahir', isRequired: true),
+                      'Masukkan nama lengkap', provider.namaControllerCreate),
+                  buildLabel('Umur', isRequired: true),
                   buildTextField(
-                      'Masukkan tempat lahir', provider.tempatLahirController),
-                  buildLabel('Tanggal Lahir', isRequired: true),
-                  GestureDetector(
-                    onTap: () => provider.selectDate(context),
-                    child: AbsorbPointer(
-                      child: TextFormField(
-                        controller: provider.tanggalLahirController,
-                        decoration: InputDecoration(
-                          hintText: 'Pilih tanggal lahir',
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 14),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade300),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                      ),
-                    ),
+                    'Masukkan umur',
+                    provider.umurControllerCreate,
+                    keyboardType: TextInputType.number,
                   ),
                   buildLabel('Jenis Kelamin', isRequired: true),
                   buildDropdownDynamic(
-                    selectedValue: provider.selectedKelaminId,
-                    onChanged: provider.setSelectedKelaminId,
+                    selectedValue: provider.selectedKelaminIdCreate,
+                    onChanged: provider.setSelectedKelaminIdCreate,
                     items: dataProvider.jenisKelaminList
                         .map((e) => DropdownMenuItem(
                               value: e.id,
@@ -103,13 +102,10 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
                             ))
                         .toList(),
                   ),
-                  buildLabel('Suku', isRequired: true),
-                  buildTextField(
-                      'Masukkan nama suku', provider.sukuController),
                   buildLabel('Agama', isRequired: true),
                   buildDropdownDynamic(
-                    selectedValue: provider.selectedAgamaId,
-                    onChanged: provider.setSelectedAgamaId,
+                    selectedValue: provider.selectedAgamaIdCreate,
+                    onChanged: provider.setSelectedAgamaIdCreate,
                     items: dataProvider.agamaList
                         .map((e) => DropdownMenuItem(
                               value: e.id,
@@ -117,10 +113,10 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
                             ))
                         .toList(),
                   ),
-                  buildLabel('Pekerjaan Anak', isRequired: true),
+                  buildLabel('Pekerjaan', isRequired: true),
                   buildDropdownDynamic(
-                    selectedValue: provider.selectedPekerjaanAnakId,
-                    onChanged: provider.setSelectedPekerjaanAnakId,
+                    selectedValue: provider.selectedPekerjaanIdCreate,
+                    onChanged: provider.setSelectedPekerjaanIdCreate,
                     items: dataProvider.pekerjaanList
                         .map((e) => DropdownMenuItem(
                               value: e.id,
@@ -128,37 +124,33 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
                             ))
                         .toList(),
                   ),
-                  buildLabel('Nama Lengkap Ayah', isRequired: true),
-                  buildTextField(
-                      'Masukkan nama lengkap ayah', provider.namaAyahController),
-                  buildLabel('Nama Lengkap Ibu', isRequired: true),
-                  buildTextField(
-                      'Masukkan nama lengkap ibu', provider.namaIbuController),
-                  buildLabel('Pekerjaan Orang Tua', isRequired: true),
+                  buildLabel('Penghasilan', isRequired: true),
                   buildDropdownDynamic(
-                    selectedValue: provider.selectedPekerjaanOrtuId,
-                    onChanged: provider.setSelectedPekerjaanOrtuId,
-                    items: dataProvider.pekerjaanList
+                    selectedValue: provider.selectedPenghasilanIdCreate,
+                    onChanged: provider.setSelectedPenghasilanIdCreate,
+                    items: dataProvider.penghasilanList
                         .map((e) => DropdownMenuItem(
                               value: e.id,
-                              child: Text(e.namaPekerjaan),
+                              child: Text(e.rentangPenghasilan),
                             ))
                         .toList(),
                   ),
                   buildLabel('Alamat', isRequired: true),
                   buildTextField(
                     'Masukkan alamat lengkap',
-                    provider.alamatController,
+                    provider.alamatControllerCreate,
                     maxLines: 3,
                     inputFormatters: [
                       FilteringTextInputFormatter.allow(
                           RegExp(r'[a-zA-Z0-9\s,.\/-]')),
                     ],
                   ),
-                  buildLabel('Upload KK', isRequired: true),
+                  buildLabel('Nama PLN', isRequired: true),
+                  buildTextField(
+                      'Masukkan nama PLN', provider.namaPlnControllerCreate),
+                  buildLabel('Upload Kartu Keluarga', isRequired: true),
                   GestureDetector(
-                    onTap: () => provider.pickKKFile(),
-                    child: Container(
+                    onTap: () => provider.pickKKFileCreate(context),                    child: Container(
                       height: 48,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
@@ -171,7 +163,7 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              provider.selectedFileName ?? 'Pilih file KK...',
+                              provider.selectedFileNameCreate ?? 'Pilih file KK...',
                               style: const TextStyle(
                                   color: Colors.black54, fontSize: 16),
                               overflow: TextOverflow.ellipsis,
@@ -192,8 +184,7 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
                               if (!_formKey.currentState!.validate()) return;
 
                               setState(() {
-                                _isSubmitting =
-                                    true;
+                                _isSubmitting = true;
                               });
 
                               showDialog(
@@ -203,10 +194,10 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
                                   content: Row(
                                     children: [
                                       CircularProgressIndicator(),
-                                      SizedBox(width: 20),
+                                      SizedBox(width: 40),
                                       Expanded(
                                           child: Text(
-                                              'Mengirim data... Mohon tunggu.')),
+                                              'Mengirim data ke server, mohon tunggu.')),
                                     ],
                                   ),
                                 ),
@@ -214,7 +205,7 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
 
                               try {
                                 final result =
-                                    await provider.submitForm(context);
+                                    await provider.submitFormCreate(context);
                                 Navigator.of(context).pop(); // tutup dialog
                                 if (result == 1) {
                                   if (context.mounted) {
@@ -225,7 +216,7 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
                                     );
                                     Navigator.pop(context);
                                     // Reset form after submission
-                                    provider.resetForm();
+                                    provider.resetFormCreate();
                                   }
                                 }
                               } catch (e) {
@@ -236,8 +227,7 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
                                 );
                               } finally {
                                 setState(() {
-                                  _isSubmitting =
-                                      false; // Set submitting flag back to false
+                                  _isSubmitting = false;
                                 });
                               }
                             },
@@ -247,8 +237,7 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
                             borderRadius: BorderRadius.circular(12)),
                       ),
                       child: _isSubmitting
-                          ? const CircularProgressIndicator(
-                              color: Colors.white) // Show loading indicator
+                          ? const CircularProgressIndicator(color: Colors.white)
                           : const Text(
                               'Ajukan',
                               style: TextStyle(
@@ -261,6 +250,61 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildDropdownNIK(DataProvider dataProvider,
+      SktmListrikProvider provider, KartuKeluargaProvider kkProvider) {
+    final anggotaList = kkProvider.data?.anggota ?? [];
+
+    // Buat list item dropdown dari anggota KK
+    final dropdownItems = anggotaList.asMap().entries.map((entry) {
+      final index = entry.key;
+      final anggota = entry.value;
+      return DropdownMenuItem<int>(
+        value: index,
+        child: Text(
+          "${anggota.nomorNik} - ${anggota.name}",
+          style: const TextStyle(fontWeight: FontWeight.normal),
+        ),
+      );
+    }).toList();
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: DropdownButtonFormField<int>(
+        value: provider.selectedNikIndexCreate,
+        isExpanded: true,
+        hint: const Text(
+          'Pilih NIK dari kartu keluarga',
+          style: TextStyle(
+            color: Colors.grey,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+        items: dropdownItems,
+        onChanged: (value) {
+          if (value != null && kkProvider.data != null) {
+            final selectedAnggota = kkProvider.data!.anggota[value];
+
+            // Panggil method baru untuk set data otomatis
+            provider.setSelectedNikCreate(value, selectedAnggota.id, selectedAnggota,
+                agamaList: dataProvider.agamaList,
+                jkList: dataProvider.jenisKelaminList,
+                pekerjaanList: dataProvider.pekerjaanList);
+          }
+        },
+        validator: (v) => v == null ? 'Wajib dipilih' : null,
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
       ),
@@ -313,8 +357,8 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
         hint: const Text(
           'Pilih salah satu',
           style: TextStyle(
-            color: Colors.grey, // sama seperti kode 2
-            fontWeight: FontWeight.normal, // disamakan
+            color: Colors.grey,
+            fontWeight: FontWeight.normal,
           ),
         ),
         items: items.map((e) {

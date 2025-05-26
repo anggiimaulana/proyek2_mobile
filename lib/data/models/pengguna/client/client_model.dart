@@ -1,8 +1,5 @@
-import 'package:proyek2/data/models/informasi_umum/agama_model.dart';
-import 'package:proyek2/data/models/informasi_umum/jk_model.dart';
-import 'package:proyek2/data/models/informasi_umum/pekerjaan_model.dart';
-import 'package:proyek2/data/models/informasi_umum/pendidikan_model.dart';
-import 'package:proyek2/data/models/informasi_umum/status_perkawinan.dart';
+
+import 'package:proyek2/data/models/informasi_umum/kartu_keluarga_model.dart';
 
 class ClientModel {
   bool error;
@@ -30,7 +27,7 @@ class ClientModel {
 
 class Data {
   int currentPage;
-  List<DataUser> data;
+  List<DataClient> data;
   String firstPageUrl;
   int from;
   int lastPage;
@@ -61,7 +58,7 @@ class Data {
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         currentPage: json["current_page"],
-        data: List<DataUser>.from(json["data"].map((x) => DataUser.fromJson(x))),
+        data: List<DataClient>.from(json["data"].map((x) => DataClient.fromJson(x))),
         firstPageUrl: json["first_page_url"],
         from: json["from"],
         lastPage: json["last_page"],
@@ -92,76 +89,27 @@ class Data {
       };
 }
 
-class DataUser {
-  int id;
-  String nik;
-  String name;
-  String tempatLahir;
-  DateTime tanggalLahir;
-  JenisKelamin jk;
-  StatusPerkawinan status;
-  Agama agama;
-  String alamat;
-  Pendidikan pendidikan;
-  Pekerjaan pekerjaan;
+class DataClient {
+  KartuKeluarga kkId;
+  String namaKepalaKeluarga;
   String nomorTelepon;
-  String password;
-  DateTime createdAt;
-  DateTime updatedAt;
 
-  DataUser({
-    required this.id,
-    required this.nik,
-    required this.name,
-    required this.tempatLahir,
-    required this.tanggalLahir,
-    required this.jk,
-    required this.status,
-    required this.agama,
-    required this.alamat,
-    required this.pendidikan,
-    required this.pekerjaan,
+  DataClient({
+    required this.kkId,
+    required this.namaKepalaKeluarga,
     required this.nomorTelepon,
-    required this.password,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
-  factory DataUser.fromJson(Map<String, dynamic> json) => DataUser(
-        id: json["id"],
-        nik: json["nik"],
-        name: json["name"],
-        tempatLahir: json["tempat_lahir"],
-        tanggalLahir: DateTime.parse(json["tanggal_lahir"]),
-        jk: json["jk"],
-        status: json["status"],
-        agama: json["agama"],
-        alamat: json["alamat"],
-        pendidikan: json["pendidikan"],
-        pekerjaan: json["pekerjaan"],
+  factory DataClient.fromJson(Map<String, dynamic> json) => DataClient(
+        kkId: json["kk_id"],
+        namaKepalaKeluarga: json["nama_kepala_keluarga"],
         nomorTelepon: json["nomor_telepon"],
-        password: json["password"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "nik": nik,
-        "name": name,
-        "tempat_lahir": tempatLahir,
-        "tanggal_lahir":
-            "${tanggalLahir.year.toString().padLeft(4, '0')}-${tanggalLahir.month.toString().padLeft(2, '0')}-${tanggalLahir.day.toString().padLeft(2, '0')}",
-        "jk": jk,
-        "status": status,
-        "agama": agama,
-        "alamat": alamat,
-        "pendidikan": pendidikan,
-        "pekerjaan": pekerjaan,
+        "kk_id": kkId,
+        "nama_kepala_keluarga": namaKepalaKeluarga,
         "nomor_telepon": nomorTelepon,
-        "password": password,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
       };
 }
 
