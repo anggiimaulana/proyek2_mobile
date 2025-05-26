@@ -7,22 +7,71 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
-import 'package:proyek2/data/models/informasi_umum/agama_model.dart';
-import 'package:proyek2/data/models/informasi_umum/hubungan_model.dart';
-import 'package:proyek2/data/models/informasi_umum/jk_model.dart';
-import 'package:proyek2/data/models/informasi_umum/kategori_pengajuan.dart';
-import 'package:proyek2/data/models/informasi_umum/pekerjaan_model.dart';
-import 'package:proyek2/data/models/informasi_umum/pendidikan_model.dart';
-import 'package:proyek2/data/models/informasi_umum/penghasilan_model.dart';
-import 'package:proyek2/data/models/informasi_umum/status_pengajuan.dart';
-import 'package:proyek2/data/models/informasi_umum/status_perkawinan.dart';
+import 'package:proyek2/data/models/informasi_umum/kartu_keluarga_detail.dart';
 import 'package:proyek2/data/models/pengajuan/pengajuan_surat_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:proyek2/data/models/pengguna/client/client_detail.dart';
 
 class ApiServices {
   static const String baseUrl =
-      "https://5eb4-103-148-130-255.ngrok-free.app/api";
+      "https://012e-2400-9800-12d-502b-ca3-7bef-1be2-151e.ngrok-free.app/api";
+
+  static const String baseUrl2 =
+      "https://012e-2400-9800-12d-502b-ca3-7bef-1be2-151e.ngrok-free.app";
+
+  Future<bool> apiLogout(String token) async {
+    final url = Uri.parse('$baseUrl/client/logout');
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data['error'] == false;
+    } else {
+      return false;
+    }
+  }
+
+  Future<KartuKeluargaDetail?> fetchKartuKeluargaDetail(int kkId) async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/kk/$kkId'));
+
+      // Log response mentah untuk debug
+      debugPrint('📋 Response mentah: ${response.body}');
+
+      if (response.statusCode == 200) {
+        // Cek format response
+        final String responseBody = response.body;
+
+        // Debug response type dan content
+        debugPrint('📋 Response type: ${responseBody.runtimeType}');
+        debugPrint('📋 Response content: $responseBody');
+
+        try {
+          final decoded = jsonDecode(responseBody);
+          debugPrint('📋 Decoded JSON type: ${decoded.runtimeType}');
+          debugPrint('📋 Decoded JSON: $decoded');
+
+          return KartuKeluargaDetail.fromJson(decoded);
+        } catch (jsonError) {
+          debugPrint('❌ Error parsing JSON: $jsonError');
+          return null;
+        }
+      } else {
+        debugPrint('❌ Gagal fetch KK: ${response.statusCode} ${response.body}');
+        return null;
+      }
+    } catch (e) {
+      debugPrint("❌ Terjadi error saat fetch KK: $e");
+      return null;
+    }
+  }
 
   final Logger _logger = Logger(
     printer: PrettyPrinter(
@@ -34,52 +83,6 @@ class ApiServices {
       printTime: true,
     ),
   );
-
-  Future<void> preloadMasterData() async {
-    final prefs = await SharedPreferences.getInstance();
-
-    final jenisKelamin = await getJenisKelaminList();
-    final hubungan = await getHubunganList();
-    final agama = await getAgamaList();
-    final pekerjaan = await getPekerjaanList();
-    final pendidikan = await getPendidikanList();
-    final penghasilan = await getPenghasilanList();
-    final statusPerkawinan = await getStatusPerkawinanList();
-    final statusPengajuan = await getStatusPengajuanList();
-    final kategoriPengajuan = await getKategoriPengajuan();
-
-    await prefs.setString('jk_list', jsonEncode(jenisKelamin.toJson()));
-    await prefs.setString('hubungan_list', jsonEncode(hubungan.toJson()));
-    await prefs.setString('agama_list', jsonEncode(agama.toJson()));
-    await prefs.setString('pekerjaan_list', jsonEncode(pekerjaan.toJson()));
-    await prefs.setString('pendidikan_list', jsonEncode(pendidikan.toJson()));
-    await prefs.setString('penghasilan_list', jsonEncode(penghasilan.toJson()));
-    await prefs.setString(
-        'status_perkawinan_list', jsonEncode(statusPerkawinan.toJson()));
-    await prefs.setString(
-        'status_pengajuan_list', jsonEncode(statusPengajuan.toJson()));
-    await prefs.setString(
-        'kategori_pengajuan_list', jsonEncode(kategoriPengajuan.toJson()));
-  }
-
-  Future<T> fetchData<T>(
-      String endpoint, T Function(Map<String, dynamic>) fromJson) async {
-    try {
-      final url = '$baseUrl/$endpoint';
-      _debugRequest('GET', url, null, {});
-      final response = await http.get(Uri.parse(url));
-      _debugResponse(response);
-
-      if (response.statusCode == 200) {
-        return fromJson(jsonDecode(response.body));
-      } else {
-        _handleHttpError(response);
-        throw Exception("Gagal memuat data $endpoint.");
-      }
-    } catch (e) {
-      throw Exception("Terjadi kesalahan: ${e.toString()}");
-    }
-  }
 
   Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();
@@ -195,45 +198,31 @@ class ApiServices {
         final data = jsonDecode(response.body);
         final prefs = await SharedPreferences.getInstance();
 
-        // Verifikasi struktur respons
+        // Debug struktur respons
         if (kDebugMode) {
-          print('Response structure check:');
-          print('- Has token: ${data.containsKey('token')}');
-          print('- Has client: ${data.containsKey('data')}');
-          if (data.containsKey('data') && data['data'].containsKey('client')) {
-            print(
-                '- Client has id: ${data['data']['client'].containsKey('id')}');
-            print(
-                '- Client has name: ${data['data']['client'].containsKey('name')}');
-          }
+          print('Response received: $data');
         }
 
-        // Simpan token dan data client ke SharedPreferences
+        // Simpan token
         if (data.containsKey('token')) {
           await prefs.setString('token', data['token']);
         } else {
-          print("Warning: No token in response");
+          print("Warning: Token tidak ditemukan di response.");
         }
 
-        // Pastikan data client ada di dalam response
-        if (data.containsKey('data') && data['data'].containsKey('client')) {
-          final client = data['data']['client'];
-          if (client.containsKey('id')) {
-            await prefs.setInt('client_id', client['id']);
-          }
-          if (client.containsKey('name')) {
-            await prefs.setString('name', client['name']);
-          }
-          if (client.containsKey('nomor_telepon')) {
-            await prefs.setString('phone', client['nomor_telepon']);
-          }
-        } else {
-          print("Warning: No client data in response");
+        // Simpan client_id
+        if (data.containsKey('client_id')) {
+          await prefs.setInt('client_id', data['client_id']);
+        }
+
+        // Simpan kk_id jika ada
+        if (data.containsKey('kk_id')) {
+          await prefs.setInt('kk_id', data['kk_id']);
         }
 
         return true;
       } else if (response.statusCode == 401) {
-        print("Login failed: Invalid credentials");
+        print("Login gagal: Nomor telepon atau password salah.");
         return false;
       } else {
         _handleHttpError(response);
@@ -251,39 +240,9 @@ class ApiServices {
       throw Exception("Gagal melakukan request ke server.");
     } catch (e) {
       print("Login error: ${e.toString()}");
-      if (e is Exception) {
-        rethrow;
-      }
       throw Exception("Terjadi kesalahan: ${e.toString()}");
     }
   }
-
-  Future<Agama> getAgamaList() =>
-      fetchData("agama", (json) => Agama.fromJson(json));
-
-  Future<Hubungan> getHubunganList() =>
-      fetchData("hubungan", (json) => Hubungan.fromJson(json));
-
-  Future<JenisKelamin> getJenisKelaminList() =>
-      fetchData("jk", (json) => JenisKelamin.fromJson(json));
-
-  Future<Pekerjaan> getPekerjaanList() =>
-      fetchData("pekerjaan", (json) => Pekerjaan.fromJson(json));
-
-  Future<KategoriPengajuan> getKategoriPengajuan() => fetchData(
-      "kategori-pengajuan", (json) => KategoriPengajuan.fromJson(json));
-
-  Future<Pendidikan> getPendidikanList() =>
-      fetchData("pendidikan", (json) => Pendidikan.fromJson(json));
-
-  Future<Penghasilan> getPenghasilanList() =>
-      fetchData("penghasilan", (json) => Penghasilan.fromJson(json));
-
-  Future<StatusPerkawinan> getStatusPerkawinanList() =>
-      fetchData("status-perkawinan", (json) => StatusPerkawinan.fromJson(json));
-
-  Future<StatusPengajuan> getStatusPengajuanList() =>
-      fetchData("status-pengajuan", (json) => StatusPengajuan.fromJson(json));
 
   Future<Map<String, dynamic>> postPengajuanSKTMListrik({
     required String nik,

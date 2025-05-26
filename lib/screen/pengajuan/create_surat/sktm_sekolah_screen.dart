@@ -2,37 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:proyek2/provider/pengajuan/data/data_provider.dart';
-import 'package:proyek2/provider/pengajuan/sks_provider.dart';
+import 'package:proyek2/provider/pengajuan/data/data_provider2.dart';
+import 'package:proyek2/provider/pengajuan/kartu_keluarga_provider.dart';
+import 'package:proyek2/provider/pengajuan/sktm_sekolah_provider.dart';
 import 'package:proyek2/style/colors.dart';
 
-class SksScreen extends StatefulWidget {
-  const SksScreen({super.key});
+class SktmSekolahScreen extends StatefulWidget {
+  const SktmSekolahScreen({super.key});
 
   @override
-  State<SksScreen> createState() => _SksScreenState();
+  State<SktmSekolahScreen> createState() => _SktmSekolahScreenState();
 }
 
-class _SksScreenState extends State<SksScreen> {
+class _SktmSekolahScreenState extends State<SktmSekolahScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _isSubmitting = false;
 
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => Provider.of<DataProvider>(context, listen: false)
-        .loadAllAndCacheData());
+    Future.microtask(() {
+      // Load data provider
+      Provider.of<DataProvider>(context, listen: false).loadAllAndCacheData();
+
+      // Load KK data
+      Provider.of<KartuKeluargaProvider>(context, listen: false)
+          .loadFromCache();
+      if (Provider.of<KartuKeluargaProvider>(context, listen: false).data ==
+          null) {
+        Provider.of<KartuKeluargaProvider>(context, listen: false)
+            .fetchAndCacheKK();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer2<SksProvider, DataProvider>(
-      builder: (context, provider, dataProvider, _) => Scaffold(
+    return Consumer3<SktmSekolahProvider, DataProvider, KartuKeluargaProvider>(
+      builder: (context, provider, dataProvider, kkProvider, _) => Scaffold(
         backgroundColor: const Color(0xFFF1F5FF),
         appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            'Surat Keterangan Status',
+            'SKTM - Sekolah',
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
           ),
@@ -55,11 +67,14 @@ class _SksScreenState extends State<SksScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  buildLabel('Hubungan pemilik akun dengan Pengaju',
-                      isRequired: true),
+                  buildLabel('NIK', isRequired: true),
+                  kkProvider.isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : buildDropdownNIK(dataProvider, provider, kkProvider),
+                  buildLabel('Status dalam Keluarga', isRequired: true),
                   buildDropdownDynamic(
-                    selectedValue: provider.selectedHubunganId,
-                    onChanged: provider.setSelectedHubunganId,
+                    selectedValue: provider.selectedHubunganIdCreate,
+                    onChanged: provider.setSelectedHubunganIdCreate,
                     items: dataProvider.hubunganList
                         .map((e) => DropdownMenuItem(
                               value: e.id,
@@ -67,18 +82,76 @@ class _SksScreenState extends State<SksScreen> {
                             ))
                         .toList(),
                   ),
-                  buildLabel('Nama Lengkap', isRequired: true),
-                  buildTextField(
-                      'Masukkan nama lengkap', provider.namaController),
-                  buildLabel('Tempat Lahir', isRequired: true),
-                  buildTextField(
-                      'Masukkan tempat lahir', provider.tempatLahirController),
-                  buildLabel('Tanggal Lahir', isRequired: true),
+                  buildLabel('Nama Lengkap Orang Tua', isRequired: true),
+                  buildTextField('Masukkan nama lengkap orang tua',
+                      provider.namaOrtuControllerCreate),
+                  buildLabel('Tempat Lahir Orang Tua', isRequired: true),
+                  buildTextField('Masukkan tempat lahir',
+                      provider.tempatLahirOrtuControllerCreate),
+                  buildLabel('Tanggal Lahir Orang Tua', isRequired: true),
                   GestureDetector(
-                    onTap: () => provider.selectDate(context),
+                    onTap: () => provider.selectDateOrtuCreate(context),
                     child: AbsorbPointer(
                       child: TextFormField(
-                        controller: provider.tanggalLahirController,
+                        controller: provider.tanggalLahirOrtuControllerCreate,
+                        decoration: InputDecoration(
+                          hintText: 'Pilih tanggal lahir',
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 14),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey.shade300),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  buildLabel('Agama', isRequired: true),
+                  buildDropdownDynamic(
+                    selectedValue: provider.selectedAgamaIdCreate,
+                    onChanged: provider.setSelectedAgamaIdCreate,
+                    items: dataProvider.agamaList
+                        .map((e) => DropdownMenuItem(
+                              value: e.id,
+                              child: Text(e.namaAgama),
+                            ))
+                        .toList(),
+                  ),
+                  buildLabel('Pekerjaan Orang Tua', isRequired: true),
+                  buildDropdownDynamic(
+                    selectedValue: provider.selectedPekerjaanIdCreate,
+                    onChanged: provider.setSelectedPekerjaanIdCreate,
+                    items: dataProvider.pekerjaanList
+                        .map((e) => DropdownMenuItem(
+                              value: e.id,
+                              child: Text(e.namaPekerjaan),
+                            ))
+                        .toList(),
+                  ),
+                  buildLabel('Alamat', isRequired: true),
+                  buildTextField(
+                    'Masukkan alamat lengkap',
+                    provider.alamatControllerCreate,
+                    maxLines: 3,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'[a-zA-Z0-9\s,.\/-]')),
+                    ],
+                  ),
+                  buildLabel('Nama Lengkap Anak', isRequired: true),
+                  buildTextField('Masukkan nama lengkap anak',
+                      provider.namaAnakControllerCreate),
+                  buildLabel('Tempat Lahir Anak', isRequired: true),
+                  buildTextField('Masukkan tempat lahir',
+                      provider.tempatLahirAnakControllerCreate),
+                  buildLabel('Tanggal Lahir Anak', isRequired: true),
+                  GestureDetector(
+                    onTap: () => provider.selectDateAnakCreate(context),
+                    child: AbsorbPointer(
+                      child: TextFormField(
+                        controller: provider.tanggalLahirAnakControllerCreate,
                         decoration: InputDecoration(
                           hintText: 'Pilih tanggal lahir',
                           contentPadding: const EdgeInsets.symmetric(
@@ -95,8 +168,8 @@ class _SksScreenState extends State<SksScreen> {
                   ),
                   buildLabel('Jenis Kelamin', isRequired: true),
                   buildDropdownDynamic(
-                    selectedValue: provider.selectedKelaminId,
-                    onChanged: provider.setSelectedKelaminId,
+                    selectedValue: provider.selectedKelaminIdCreate,
+                    onChanged: provider.setSelectedKelaminIdCreate,
                     items: dataProvider.jenisKelaminList
                         .map((e) => DropdownMenuItem(
                               value: e.id,
@@ -104,52 +177,15 @@ class _SksScreenState extends State<SksScreen> {
                             ))
                         .toList(),
                   ),
-                  buildLabel('Agama', isRequired: true),
-                  buildDropdownDynamic(
-                    selectedValue: provider.selectedAgamaId,
-                    onChanged: provider.setSelectedAgamaId,
-                    items: dataProvider.agamaList
-                        .map((e) => DropdownMenuItem(
-                              value: e.id,
-                              child: Text(e.namaAgama),
-                            ))
-                        .toList(),
-                  ),
-                  buildLabel('Pekerjaan', isRequired: true),
-                  buildDropdownDynamic(
-                    selectedValue: provider.selectedPekerjaanId,
-                    onChanged: provider.setSelectedPekerjaanId,
-                    items: dataProvider.pekerjaanList
-                        .map((e) => DropdownMenuItem(
-                              value: e.id,
-                              child: Text(e.namaPekerjaan),
-                            ))
-                        .toList(),
-                  ),
-                  buildLabel('Status Perkawinan', isRequired: true),
-                  buildDropdownDynamic(
-                    selectedValue: provider.selectedStatusId,
-                    onChanged: provider.setSelectedStatusId,
-                    items: dataProvider.statusPerkawinanList
-                        .map((e) => DropdownMenuItem(
-                              value: e.id,
-                              child: Text(e.statusPerkawinan),
-                            ))
-                        .toList(),
-                  ),
-                  buildLabel('Alamat', isRequired: true),
+                  buildLabel('Nama Sekolah', isRequired: true),
                   buildTextField(
-                    'Masukkan alamat lengkap',
-                    provider.alamatController,
-                    maxLines: 3,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.allow(
-                          RegExp(r'[a-zA-Z0-9\s,.\/-]')),
-                    ],
-                  ),
-                  buildLabel('Upload KK', isRequired: true),
+                      'Masukkan nama sekolah', provider.namaSekolahControllerCreate),
+                  buildLabel('Kelas', isRequired: true),
+                  buildTextField('Masukkan kelas anak di sekolah',
+                      provider.kelasAnakControllerCreate),
+                  buildLabel('Upload Kartu Keluarga', isRequired: true),
                   GestureDetector(
-                    onTap: () => provider.pickKKFile(),
+                    onTap: () => provider.pickKKFileCreate(context),
                     child: Container(
                       height: 48,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -163,7 +199,7 @@ class _SksScreenState extends State<SksScreen> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: Text(
-                              provider.selectedFileName ?? 'Pilih file KK...',
+                              provider.selectedFileNameCreate ?? 'Pilih file KK...',
                               style: const TextStyle(
                                   color: Colors.black54, fontSize: 16),
                               overflow: TextOverflow.ellipsis,
@@ -184,8 +220,7 @@ class _SksScreenState extends State<SksScreen> {
                               if (!_formKey.currentState!.validate()) return;
 
                               setState(() {
-                                _isSubmitting =
-                                    true; // Set submitting flag to true
+                                _isSubmitting = true;
                               });
 
                               showDialog(
@@ -195,10 +230,10 @@ class _SksScreenState extends State<SksScreen> {
                                   content: Row(
                                     children: [
                                       CircularProgressIndicator(),
-                                      SizedBox(width: 20),
+                                      SizedBox(width: 40),
                                       Expanded(
                                           child: Text(
-                                              'Mengirim data... Mohon tunggu.')),
+                                              'Mengirim data ke server, mohon tunggu.')),
                                     ],
                                   ),
                                 ),
@@ -206,7 +241,7 @@ class _SksScreenState extends State<SksScreen> {
 
                               try {
                                 final result =
-                                    await provider.submitForm(context);
+                                    await provider.submitFormCreate(context);
                                 Navigator.of(context).pop(); // tutup dialog
                                 if (result == 1) {
                                   if (context.mounted) {
@@ -217,7 +252,7 @@ class _SksScreenState extends State<SksScreen> {
                                     );
                                     Navigator.pop(context);
                                     // Reset form after submission
-                                    provider.resetForm();
+                                    provider.resetFormCreate();
                                   }
                                 }
                               } catch (e) {
@@ -253,6 +288,62 @@ class _SksScreenState extends State<SksScreen> {
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildDropdownNIK(DataProvider dataProvider,
+      SktmSekolahProvider provider, KartuKeluargaProvider kkProvider) {
+    final anggotaList = kkProvider.data?.anggota ?? [];
+
+    // Buat list item dropdown dari anggota KK
+    final dropdownItems = anggotaList.asMap().entries.map((entry) {
+      final index = entry.key;
+      final anggota = entry.value;
+      return DropdownMenuItem<int>(
+        value: index,
+        child: Text(
+          "${anggota.nomorNik} - ${anggota.name}",
+          style: const TextStyle(fontWeight: FontWeight.normal),
+        ),
+      );
+    }).toList();
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: DropdownButtonFormField<int>(
+        value: provider.selectedNikIndexCreate,
+        isExpanded: true,
+        hint: const Text(
+          'Pilih NIK dari kartu keluarga',
+          style: TextStyle(
+            color: Colors.grey,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+        items: dropdownItems,
+        onChanged: (value) {
+          if (value != null && kkProvider.data != null) {
+            final selectedAnggota = kkProvider.data!.anggota[value];
+
+            // Panggil method baru untuk set data otomatis
+            provider.setSelectedNik(value, selectedAnggota.id, selectedAnggota,
+                hubunganList: dataProvider.hubunganList,
+                agamaList: dataProvider.agamaList,
+                jkList: dataProvider.jenisKelaminList,
+                pekerjaanList: dataProvider.pekerjaanList);
+          }
+        },
+        validator: (v) => v == null ? 'Wajib dipilih' : null,
+        decoration: InputDecoration(
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(12),
           ),
         ),
       ),

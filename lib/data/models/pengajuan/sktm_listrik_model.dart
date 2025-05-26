@@ -1,6 +1,8 @@
 import 'package:proyek2/data/models/informasi_umum/agama_model.dart';
 import 'package:proyek2/data/models/informasi_umum/hubungan_model.dart';
 import 'package:proyek2/data/models/informasi_umum/jk_model.dart';
+import 'package:proyek2/data/models/informasi_umum/kartu_keluarga_detail.dart';
+import 'package:proyek2/data/models/informasi_umum/kartu_keluarga_model.dart';
 import 'package:proyek2/data/models/informasi_umum/pekerjaan_model.dart';
 import 'package:proyek2/data/models/informasi_umum/penghasilan_model.dart';
 
@@ -53,6 +55,8 @@ class Data {
 }
 
 class DetailSktmListrik {
+  KartuKeluarga kkId;
+  Nik nikId;
   Hubungan hubungan;
   String nama;
   String nik;
@@ -70,6 +74,8 @@ class DetailSktmListrik {
 
   DetailSktmListrik({
     required this.hubungan,
+    required this.kkId,
+    required this.nikId,
     required this.nama,
     required this.nik,
     required this.alamat,
@@ -85,7 +91,10 @@ class DetailSktmListrik {
     required this.id,
   });
 
-  factory DetailSktmListrik.fromJson(Map<String, dynamic> json) => DetailSktmListrik(
+  factory DetailSktmListrik.fromJson(Map<String, dynamic> json) =>
+      DetailSktmListrik(
+        kkId: KartuKeluarga.fromJson(json["kk_id"]),
+        nikId: Nik.fromJson(json["nik_id"]),
         hubungan: Hubungan.fromJson(json["hubungan"]),
         nama: json["nama"],
         nik: json["nik"],
@@ -104,6 +113,8 @@ class DetailSktmListrik {
 
   Map<String, dynamic> toJson() => {
         "hubungan": hubungan.toJson(),
+        "kk_id": kkId.toJson(),
+        "nik_id": nikId.toJson(),
         "nama": nama,
         "nik": nik,
         "alamat": alamat,
