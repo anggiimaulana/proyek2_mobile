@@ -68,7 +68,8 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
   }
 
   Future<void> _loadSktmSekolahData() async {
-    final provider = Provider.of<SktmSekolahEditProvider>(context, listen: false);
+    final provider =
+        Provider.of<SktmSekolahEditProvider>(context, listen: false);
     final dataProvider = Provider.of<DataProvider>(context, listen: false);
     final kkProvider =
         Provider.of<KartuKeluargaProvider>(context, listen: false);
@@ -99,8 +100,8 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer4<SktmSekolahEditProvider, DataProvider, KartuKeluargaProvider,
-        TrackingSuratProvider>(
+    return Consumer4<SktmSekolahEditProvider, DataProvider,
+        KartuKeluargaProvider, TrackingSuratProvider>(
       builder:
           (context, provider, dataProvider, kkProvider, trackingProvider, _) =>
               Scaffold(
@@ -197,12 +198,11 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                               // Set dropdown values
                               provider.setSelectedHubunganId(
                                   selectedAnggota.hubungan);
-                              provider.setSelectedKelaminId(
-                                  selectedAnggota.jk);
+                              provider.setSelectedKelaminId(selectedAnggota.jk);
                               provider.setSelectedPekerjaanId(
                                   selectedAnggota.pekerjaan);
-                              provider.setSelectedAgamaId(
-                                  selectedAnggota.agama);
+                              provider
+                                  .setSelectedAgamaId(selectedAnggota.agama);
                             }
                           },
                           items: kkProvider.data?.anggota
@@ -420,21 +420,17 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                                     if (provider.selectedNikId == null) {
                                       missingFields.add('NIK');
                                     }
-                                    if (provider.selectedHubunganId ==
-                                        null) {
+                                    if (provider.selectedHubunganId == null) {
                                       missingFields
                                           .add('Status dalam Keluarga');
                                     }
-                                    if (provider.selectedKelaminId ==
-                                        null) {
+                                    if (provider.selectedKelaminId == null) {
                                       missingFields.add('Jenis Kelamin');
                                     }
-                                    if (provider.selectedPekerjaanId ==
-                                        null) {
+                                    if (provider.selectedPekerjaanId == null) {
                                       missingFields.add('Pekerjaan');
                                     }
-                                    if (provider.selectedAgamaId ==
-                                        null) {
+                                    if (provider.selectedAgamaId == null) {
                                       missingFields.add('Agama');
                                     }
 

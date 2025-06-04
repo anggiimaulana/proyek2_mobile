@@ -38,7 +38,8 @@ class _SktmSekolahScreenState extends State<SktmSekolahScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<SktmSekolahCreateProvider, DataProvider, KartuKeluargaProvider>(
+    return Consumer3<SktmSekolahCreateProvider, DataProvider,
+        KartuKeluargaProvider>(
       builder: (context, provider, dataProvider, kkProvider, _) => Scaffold(
         backgroundColor: const Color(0xFFF1F5FF),
         appBar: AppBar(

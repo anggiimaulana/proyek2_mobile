@@ -1,7 +1,6 @@
 import 'package:proyek2/data/models/informasi_umum/kategori_pengajuan.dart';
 import 'package:proyek2/data/models/informasi_umum/status_pengajuan.dart';
 import 'package:proyek2/data/models/client/client_detail.dart';
-import 'package:proyek2/data/models/client/client_model.dart';
 
 class PengajuanDetailModel {
   List<DataPengajuanUser> data;

@@ -196,14 +196,13 @@ class _SkpEditScreenState extends State<SkpEditScreen> {
                               // Set dropdown values
                               provider.setSelectedHubunganId(
                                   selectedAnggota.hubungan);
-                              provider.setSelectedKelaminId(
-                                  selectedAnggota.jk);
+                              provider.setSelectedKelaminId(selectedAnggota.jk);
                               provider.setSelectedPekerjaanTerdahuluId(
                                   selectedAnggota.pekerjaan);
                               provider.setSelectedPekerjaanSekarangId(
                                   selectedAnggota.pekerjaan);
-                              provider.setSelectedStatusId(
-                                  selectedAnggota.status);
+                              provider
+                                  .setSelectedStatusId(selectedAnggota.status);
                             }
                           },
                           items: kkProvider.data?.anggota
@@ -267,10 +266,8 @@ class _SkpEditScreenState extends State<SkpEditScreen> {
                         ),
                         buildLabel('Pekerjaan Terdahulu', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue:
-                              provider.selectedPekerjaanTerdahuluId,
-                          onChanged:
-                              provider.setSelectedPekerjaanTerdahuluId,
+                          selectedValue: provider.selectedPekerjaanTerdahuluId,
+                          onChanged: provider.setSelectedPekerjaanTerdahuluId,
                           items: dataProvider.pekerjaanList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -281,10 +278,8 @@ class _SkpEditScreenState extends State<SkpEditScreen> {
                         ),
                         buildLabel('Pekerjaan Sekarang', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue:
-                              provider.selectedPekerjaanSekarangId,
-                          onChanged:
-                              provider.setSelectedPekerjaanSekarangId,
+                          selectedValue: provider.selectedPekerjaanSekarangId,
+                          onChanged: provider.setSelectedPekerjaanSekarangId,
                           items: dataProvider.pekerjaanList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -394,13 +389,11 @@ class _SkpEditScreenState extends State<SkpEditScreen> {
                                     if (provider.selectedNikId == null) {
                                       missingFields.add('NIK');
                                     }
-                                    if (provider.selectedHubunganId ==
-                                        null) {
+                                    if (provider.selectedHubunganId == null) {
                                       missingFields
                                           .add('Status dalam Keluarga');
                                     }
-                                    if (provider.selectedKelaminId ==
-                                        null) {
+                                    if (provider.selectedKelaminId == null) {
                                       missingFields.add('Jenis Kelamin');
                                     }
                                     if (provider.selectedPekerjaanTerdahuluId ==
@@ -411,8 +404,7 @@ class _SkpEditScreenState extends State<SkpEditScreen> {
                                         null) {
                                       missingFields.add('Pekerjaan Sekarang');
                                     }
-                                    if (provider.selectedStatusId ==
-                                        null) {
+                                    if (provider.selectedStatusId == null) {
                                       missingFields.add('Status Perkawinan');
                                     }
 

@@ -17,7 +17,6 @@ class AuthProvider extends ChangeNotifier {
     try {
       final success = await _apiServices.login(phone, password);
       if (success) {
-
         final prefs = await SharedPreferences.getInstance();
         final token = prefs.getString('token') ?? '';
         final clientId = prefs.getInt('client_id') ?? 0;

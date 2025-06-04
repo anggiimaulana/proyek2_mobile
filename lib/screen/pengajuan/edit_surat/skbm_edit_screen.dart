@@ -197,14 +197,13 @@ class _SkbmEditScreenState extends State<SkbmEditScreen> {
                               // Set dropdown values
                               provider.setSelectedHubunganId(
                                   selectedAnggota.hubungan);
-                              provider.setSelectedAgamaId(
-                                  selectedAnggota.agama);
-                              provider.setSelectedKelaminId(
-                                  selectedAnggota.jk);
+                              provider
+                                  .setSelectedAgamaId(selectedAnggota.agama);
+                              provider.setSelectedKelaminId(selectedAnggota.jk);
                               provider.setSelectedPekerjaanId(
                                   selectedAnggota.pekerjaan);
-                              provider.setSelectedStatusId(
-                                  selectedAnggota.status);
+                              provider
+                                  .setSelectedStatusId(selectedAnggota.status);
                             }
                           },
                           items: kkProvider.data?.anggota
@@ -391,21 +390,17 @@ class _SkbmEditScreenState extends State<SkbmEditScreen> {
                                     if (provider.selectedNikId == null) {
                                       missingFields.add('NIK');
                                     }
-                                    if (provider.selectedHubunganId ==
-                                        null) {
+                                    if (provider.selectedHubunganId == null) {
                                       missingFields
                                           .add('Status dalam Keluarga');
                                     }
-                                    if (provider.selectedKelaminId ==
-                                        null) {
+                                    if (provider.selectedKelaminId == null) {
                                       missingFields.add('Jenis Kelamin');
                                     }
-                                    if (provider.selectedPekerjaanId ==
-                                        null) {
+                                    if (provider.selectedPekerjaanId == null) {
                                       missingFields.add('Pekerjaan');
                                     }
-                                    if (provider.selectedStatusId ==
-                                        null) {
+                                    if (provider.selectedStatusId == null) {
                                       missingFields.add('Status Perkawinan');
                                     }
 

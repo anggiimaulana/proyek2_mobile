@@ -8,7 +8,7 @@ import 'package:proyek2/screen/pengajuan/create_surat/skpot_create_screen.dart';
 import 'package:proyek2/screen/pengajuan/create_surat/sktm_beasiswa_create_screen.dart';
 import 'package:proyek2/screen/pengajuan/create_surat/sktm_listrik_create_screen.dart';
 import 'package:proyek2/screen/pengajuan/create_surat/sktm_sekolah_create_screen.dart';
-import 'package:proyek2/screen/pengajuan/create_surat/sku_edit_screen.dart';
+import 'package:proyek2/screen/pengajuan/create_surat/sku_create_screen.dart';
 
 enum NavigationRoute {
   mainRoute("/"),

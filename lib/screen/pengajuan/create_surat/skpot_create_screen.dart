@@ -276,8 +276,8 @@ class _SkpotScreenState extends State<SkpotScreen> {
     );
   }
 
-  Widget buildDropdownNIK(DataProvider dataProvider, SkpotCreateProvider provider,
-      KartuKeluargaProvider kkProvider) {
+  Widget buildDropdownNIK(DataProvider dataProvider,
+      SkpotCreateProvider provider, KartuKeluargaProvider kkProvider) {
     final anggotaList = kkProvider.data?.anggota ?? [];
 
     // Buat list item dropdown dari anggota KK

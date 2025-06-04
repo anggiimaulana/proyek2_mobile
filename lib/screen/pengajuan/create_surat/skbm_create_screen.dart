@@ -274,8 +274,8 @@ class _SkbmScreenState extends State<SkbmScreen> {
     );
   }
 
-  Widget buildDropdownNIK(DataProvider dataProvider, SkbmCreateProvider provider,
-      KartuKeluargaProvider kkProvider) {
+  Widget buildDropdownNIK(DataProvider dataProvider,
+      SkbmCreateProvider provider, KartuKeluargaProvider kkProvider) {
     final anggotaList = kkProvider.data?.anggota ?? [];
 
     // Buat list item dropdown dari anggota KK

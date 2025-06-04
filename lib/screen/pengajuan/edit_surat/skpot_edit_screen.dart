@@ -79,14 +79,13 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
 
       if (skpotBeasiswa != null) {
         provider.fillFormWithExistingDataUpdate(
-          skpotBeasiswa: skpotBeasiswa,
-          jkList: dataProvider.jenisKelaminList,
-          pekerjaanList: dataProvider.pekerjaanList,
-          agamaList: dataProvider.agamaList,
-          hubunganList: dataProvider.hubunganList,
-          nikList: kkProvider.data?.anggota,
-          penghasilanList: dataProvider.penghasilanList
-        );
+            skpotBeasiswa: skpotBeasiswa,
+            jkList: dataProvider.jenisKelaminList,
+            pekerjaanList: dataProvider.pekerjaanList,
+            agamaList: dataProvider.agamaList,
+            hubunganList: dataProvider.hubunganList,
+            nikList: kkProvider.data?.anggota,
+            penghasilanList: dataProvider.penghasilanList);
       }
     } catch (e) {
       debugPrint('Error loading SKU data: $e');
@@ -198,10 +197,9 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                               // Set dropdown values
                               provider.setSelectedHubunganId(
                                   selectedAnggota.hubungan);
-                              provider.setSelectedKelaminId(
-                                  selectedAnggota.jk);
-                              provider.setSelectedAgamaId(
-                                  selectedAnggota.agama);
+                              provider.setSelectedKelaminId(selectedAnggota.jk);
+                              provider
+                                  .setSelectedAgamaId(selectedAnggota.agama);
                             }
                           },
                           items: kkProvider.data?.anggota
@@ -398,17 +396,14 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                                     if (provider.selectedNikId == null) {
                                       missingFields.add('NIK');
                                     }
-                                    if (provider.selectedHubunganId ==
-                                        null) {
+                                    if (provider.selectedHubunganId == null) {
                                       missingFields
                                           .add('Status dalam Keluarga');
                                     }
-                                    if (provider.selectedKelaminId ==
-                                        null) {
+                                    if (provider.selectedKelaminId == null) {
                                       missingFields.add('Jenis Kelamin');
                                     }
-                                    if (provider
-                                            .selectedPekerjaanOrtuId ==
+                                    if (provider.selectedPekerjaanOrtuId ==
                                         null) {
                                       missingFields.add('Pekerjaan');
                                     }
@@ -416,8 +411,7 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                                         null) {
                                       missingFields.add('Penghasilan');
                                     }
-                                    if (provider.selectedAgamaId ==
-                                        null) {
+                                    if (provider.selectedAgamaId == null) {
                                       missingFields.add('Agama');
                                     }
 

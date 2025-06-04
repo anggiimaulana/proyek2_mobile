@@ -38,7 +38,8 @@ class _SktmBeasiswaScreenState extends State<SktmBeasiswaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<SktmBeasiswaCreateProvider, DataProvider, KartuKeluargaProvider>(
+    return Consumer3<SktmBeasiswaCreateProvider, DataProvider,
+        KartuKeluargaProvider>(
       builder: (context, provider, dataProvider, kkProvider, _) => Scaffold(
         backgroundColor: const Color(0xFFF1F5FF),
         appBar: AppBar(

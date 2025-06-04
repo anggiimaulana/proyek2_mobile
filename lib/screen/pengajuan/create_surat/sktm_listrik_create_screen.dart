@@ -38,7 +38,8 @@ class _SktmListrikScreenState extends State<SktmListrikScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer3<SktmListrikCreateProvider, DataProvider, KartuKeluargaProvider>(
+    return Consumer3<SktmListrikCreateProvider, DataProvider,
+        KartuKeluargaProvider>(
       builder: (context, provider, dataProvider, kkProvider, _) => Scaffold(
         backgroundColor: const Color(0xFFF1F5FF),
         appBar: AppBar(
@@ -150,7 +151,8 @@ class _SktmListrikScreenState extends State<SktmListrikScreen> {
                       'Masukkan nama PLN', provider.namaPlnController),
                   buildLabel('Upload Kartu Keluarga', isRequired: true),
                   GestureDetector(
-                    onTap: () => provider.pickFile(context),                    child: Container(
+                    onTap: () => provider.pickFile(context),
+                    child: Container(
                       height: 48,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(

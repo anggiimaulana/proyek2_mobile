@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:proyek2/data/api/api_services.dart';
 import 'package:proyek2/data/models/informasi_umum/agama_model.dart';
 import 'package:proyek2/data/models/informasi_umum/data_kk_hive_model.dart';
-import 'package:proyek2/data/models/informasi_umum/hubungan_model.dart';
 import 'package:proyek2/data/models/informasi_umum/jk_model.dart';
 import 'package:proyek2/data/models/informasi_umum/pekerjaan_model.dart';
 import 'package:proyek2/data/models/informasi_umum/status_perkawinan.dart';
