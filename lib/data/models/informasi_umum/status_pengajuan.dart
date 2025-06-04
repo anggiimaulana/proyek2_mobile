@@ -26,27 +26,19 @@ class StatusPengajuan {
 class StatusPengajuanData {
   int id;
   String status;
-  DateTime createdAt;
-  DateTime updatedAt;
 
   StatusPengajuanData({
     required this.id,
     required this.status,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   factory StatusPengajuanData.fromJson(Map<String, dynamic> json) => StatusPengajuanData(
         id: json["id"],
         status: json["status"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "status": status,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
       };
 }

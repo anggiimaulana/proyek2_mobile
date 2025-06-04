@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "71145975091",
+    "project_id": "crud-tubes-pab",
+    "storage_bucket": "crud-tubes-pab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71145975091:android:3d5ca5f1d34991caba2246",
+        "android_client_info": {
+          "package_name": "com.example.proyek2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfCMaOKfybYwW1maXfnJ6dzZUn-FPz53E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:71145975091:android:fff7ff34827e88ccba2246",
+        "android_client_info": {
+          "package_name": "com.example.tubes_pab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfCMaOKfybYwW1maXfnJ6dzZUn-FPz53E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

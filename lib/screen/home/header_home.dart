@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyek2/data/api/api_services.dart';
 import 'package:proyek2/screen/login/login.dart';
 import 'package:proyek2/screen/home/banner_home.dart';
 import 'package:proyek2/style/colors.dart';
@@ -25,19 +26,40 @@ class _MyHeaderState extends State<MyHeader> {
 
   Future<void> _logout(BuildContext context) async {
     _showLoadingDialog(context);
-    await Future.delayed(const Duration(seconds: 1));
 
     final prefs = await SharedPreferences.getInstance();
-    final success = await prefs.clear(); 
+    await prefs.remove('kk_fetched');
+    final token =
+        prefs.getString('token'); 
 
-    if (mounted) {
-      Navigator.pop(context); // tutup spinner
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
-          settings: const RouteSettings(arguments: "Berhasil logout!"),
-        ),
+    if (token == null) {
+      Navigator.pop(context); // Tutup loading
+      // Kalau token null berarti gak login
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Token tidak ditemukan, silakan login ulang.')),
+      );
+      return;
+    }
+
+    final success = await ApiServices().apiLogout(token);
+
+    Navigator.pop(context); 
+
+    if (success) {
+      await prefs.clear();
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const LoginScreen(),
+            settings: const RouteSettings(arguments: "Berhasil logout!"),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Logout gagal, coba lagi nanti.')),
       );
     }
   }

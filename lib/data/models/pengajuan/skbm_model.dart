@@ -1,6 +1,8 @@
 import 'package:proyek2/data/models/informasi_umum/agama_model.dart';
 import 'package:proyek2/data/models/informasi_umum/hubungan_model.dart';
 import 'package:proyek2/data/models/informasi_umum/jk_model.dart';
+import 'package:proyek2/data/models/informasi_umum/kartu_keluarga_detail.dart';
+import 'package:proyek2/data/models/informasi_umum/kartu_keluarga_model.dart';
 import 'package:proyek2/data/models/informasi_umum/pekerjaan_model.dart';
 import 'package:proyek2/data/models/informasi_umum/status_pengajuan.dart';
 
@@ -31,7 +33,8 @@ class SkbmModel {
 class Datum {
   int id;
   String nama;
-  String nik;
+  KartuKeluarga kkId;
+  Nik nikId;
   String tempatLahir;
   DateTime tanggalLahir;
   JenisKelamin jenisKelamin;
@@ -45,9 +48,10 @@ class Datum {
   DateTime updatedAt;
 
   Datum({
+    required this.kkId,
+    required this.nikId,
     required this.id,
     required this.nama,
-    required this.nik,
     required this.tempatLahir,
     required this.tanggalLahir,
     required this.jenisKelamin,
@@ -64,7 +68,8 @@ class Datum {
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         nama: json["nama"],
-        nik: json["nik"],
+        kkId: KartuKeluarga.fromJson(json["kk_id"]),
+        nikId: Nik.fromJson(json["nik_id"]),
         tempatLahir: json["tempat_lahir"],
         tanggalLahir: DateTime.parse(json["tanggal_lahir"]),
         jenisKelamin: json["jenis_kelamin"],
@@ -81,7 +86,8 @@ class Datum {
   Map<String, dynamic> toJson() => {
         "id": id,
         "nama": nama,
-        "nik": nik,
+        "kk_id": kkId.toJson(),
+        "nik_id": nikId.toJson(),
         "tempat_lahir": tempatLahir,
         "tanggal_lahir":
             "${tanggalLahir.year.toString().padLeft(4, '0')}-${tanggalLahir.month.toString().padLeft(2, '0')}-${tanggalLahir.day.toString().padLeft(2, '0')}",

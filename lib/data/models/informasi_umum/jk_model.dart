@@ -25,27 +25,19 @@ class JenisKelamin {
 class Datum {
   int id;
   String jenisKelamin;
-  DateTime createdAt;
-  DateTime updatedAt;
 
   Datum({
     required this.id,
     required this.jenisKelamin,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"],
         jenisKelamin: json["jenis_kelamin"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "jenis_kelamin": jenisKelamin,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
       };
 }

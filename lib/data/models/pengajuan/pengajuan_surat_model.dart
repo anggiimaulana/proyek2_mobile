@@ -5,7 +5,7 @@ import 'package:proyek2/data/models/informasi_umum/kategori_pengajuan.dart';
 import 'package:proyek2/data/models/informasi_umum/pekerjaan_model.dart';
 import 'package:proyek2/data/models/informasi_umum/penghasilan_model.dart';
 import 'package:proyek2/data/models/informasi_umum/status_pengajuan.dart';
-import 'package:proyek2/data/models/pengguna/client/client_model.dart';
+import 'package:proyek2/data/models/client/client_model.dart';
 
 class PengajuanSuratModel {
   List<PengajuanDetail> data;
@@ -35,7 +35,7 @@ class PengajuanSuratModel {
 
 class PengajuanDetail {
   int id;
-  DataUser idUserPengajuan;
+  DataClient idUserPengajuan;
   int idAdmin;
   KategoriPengajuanData kategoriPengajuan;
   int detailId;
@@ -67,7 +67,7 @@ class PengajuanDetail {
   factory PengajuanDetail.fromJson(Map<String, dynamic> json) =>
       PengajuanDetail(
         id: json["id"],
-        idUserPengajuan: DataUser.fromJson(json["id_user_pengajuan"]),
+        idUserPengajuan: DataClient.fromJson(json["id_user_pengajuan"]),
         idAdmin: json["id_admin"] != null ? json["id_admin"]["id"] : 0,
         kategoriPengajuan:
             KategoriPengajuanData.fromJson(json["kategori_pengajuan"]),

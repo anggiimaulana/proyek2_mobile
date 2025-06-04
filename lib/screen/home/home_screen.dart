@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:proyek2/data/api/api_services.dart';
+import 'package:proyek2/provider/pengajuan/data/data_provider2.dart';
+import 'package:proyek2/provider/pengajuan/kartu_keluarga_provider.dart';
 import 'package:proyek2/screen/home/header_home.dart';
 import 'package:proyek2/style/colors.dart';
 import 'package:proyek2/screen/home/berita_home_widget.dart';
 import 'package:proyek2/screen/home/fitur_utama.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:proyek2/data/models/pengguna/client/client_detail.dart';
+import 'package:proyek2/data/models/client/client_detail.dart';
 
 class AppHomeScreen extends StatefulWidget {
   const AppHomeScreen({super.key});
@@ -22,8 +25,43 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
 
   @override
   void initState() {
-    _fetchUserData();
     super.initState();
+    _fetchUserData();
+    _fetchMasterDataIfNeeded();
+    _fetchKartuKeluargaIfNeeded();
+  }
+
+  Future<void> _fetchMasterDataIfNeeded() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Misal cek apakah data 'jk' (jenis kelamin) sudah ada
+    final alreadyLoaded = prefs.getString('jk') != null;
+
+    if (!alreadyLoaded) {
+      final dataProvider = Provider.of<DataProvider>(context, listen: false);
+      await dataProvider.loadAllAndCacheData();
+      debugPrint('Master data berhasil dimuat.');
+    } else {
+      debugPrint('Master data sudah ada di SharedPreferences.');
+    }
+  }
+
+  Future<void> _fetchKartuKeluargaIfNeeded() async {
+    final prefs = await SharedPreferences.getInstance();
+    final alreadyFetched = prefs.getBool('kk_fetched') ?? false;
+
+    if (!alreadyFetched) {
+      final kkProvider =
+          Provider.of<KartuKeluargaProvider>(context, listen: false);
+      await kkProvider.fetchAndCacheKK();
+
+      // Tandai bahwa data KK sudah di-fetch agar tidak di-fetch lagi
+      await prefs.setBool('kk_fetched', true);
+
+      debugPrint('Kartu Keluarga berhasil dimuat.');
+    } else {
+      debugPrint('Kartu Keluarga sudah pernah dimuat sebelumnya.');
+    }
   }
 
   Future<void> _fetchUserData() async {
@@ -94,21 +132,21 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
       return Scaffold(
         body: Center(
           child: Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.error_outline, size: 64, color: Colors.red),
-                SizedBox(height: 16),
+                const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                const SizedBox(height: 16),
                 Text(
                   _errorMessage!,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: _fetchUserData,
-                  child: Text("Coba Lagi"),
+                  child: const Text("Coba Lagi"),
                 ),
               ],
             ),
@@ -132,7 +170,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                         : _userName!)
                     : 'Pengguna',
               ),
-              const SizedBox(height: 150), // FIXED height
+              const SizedBox(height: 150),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -150,7 +188,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                 ),
               ),
               const FiturUtama(),
-              const SizedBox(height: 20), // FIXED height
+              const SizedBox(height: 20),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -169,7 +207,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                 ),
               ),
               const BeritaHome(),
-              const SizedBox(height: 20), // FIXED height
+              const SizedBox(height: 20),
             ],
           ),
         ),

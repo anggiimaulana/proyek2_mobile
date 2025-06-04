@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyek2/screen/home/home_screen.dart';
+import 'package:proyek2/screen/note/note_screen.dart';
 import 'package:proyek2/screen/pengajuan/pengajuan_screen.dart';
 import 'package:proyek2/style/colors.dart';
 import 'package:iconsax/iconsax.dart';
@@ -42,9 +43,7 @@ class _MainScreenState extends State<MainScreen> {
     final List<Widget> pages = [
       const AppHomeScreen(),
       const PengajuanScreen(),
-      _buildPlaceholderScreen("Bansos"),
-      _buildPlaceholderScreen("Pengaduan"),
-      _buildPlaceholderScreen("Berita"),
+      const NoteScreen(),
     ];
 
     return Scaffold(
@@ -94,61 +93,15 @@ class _MainScreenState extends State<MainScreen> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Iconsax.wallet,
+                Iconsax.note,
                 size: 22,
               ),
-              label: "Bansos",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Iconsax.camera,
-                size: 22,
-              ),
-              label: "Pengaduan",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Iconsax.gallery,
-                size: 22,
-              ),
-              label: "Berita",
+              label: "Catatan",
             ),
           ],
         ),
       ),
       body: pages[selectedIndex],
-    );
-  }
-
-  // Helper method to create placeholder screens
-  Widget _buildPlaceholderScreen(String title) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.construction,
-              size: 64,
-              color: fbackgroundColor4,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              "Halaman $title",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: fbackgroundColor4,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              "Fitur ini sedang dalam pengembangan",
-              style: TextStyle(fontSize: 16),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

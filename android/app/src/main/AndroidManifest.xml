@@ -12,15 +12,26 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
         android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
-        android:label="proyek2"
+        android:label="DesaKita - Bulak Lor"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:enableOnBackInvokedCallback="true">
+
+        <provider
+            android:name="vn.hunghd.flutterdownloader.DownloadedFileProvider"
+            android:authorities="${applicationId}.flutter_downloader.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
 
         <activity
             android:name=".MainActivity"
@@ -47,7 +58,6 @@
             android:value="2" />
     </application>
 
-    <!-- Optional: jika kamu pakai intent share/process text -->
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT" />
