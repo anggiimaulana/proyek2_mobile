@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:proyek2/provider/pengajuan/data/data_provider2.dart';
+import 'package:proyek2/provider/pengajuan/edit/sktm_listrik_edit_provider.dart';
 import 'package:proyek2/provider/pengajuan/kartu_keluarga_provider.dart';
-import 'package:proyek2/provider/pengajuan/sktm_listrik_provider.dart';
-import 'package:proyek2/provider/pengajuan/sku_provider.dart';
 import 'package:proyek2/provider/pengajuan/tracking_surat_provider.dart';
 import 'package:proyek2/style/colors.dart';
 
@@ -69,16 +67,18 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
   }
 
   Future<void> _loadSktmListrikData() async {
-    final provider = Provider.of<SktmListrikProvider>(context, listen: false);
+    final provider =
+        Provider.of<SktmListrikEditProvider>(context, listen: false);
     final dataProvider = Provider.of<DataProvider>(context, listen: false);
     final kkProvider =
         Provider.of<KartuKeluargaProvider>(context, listen: false);
 
     try {
-      final skuData = await provider.fetchSktmListrikById(widget.detailId.toString());
+      final skuData =
+          await provider.fetchSktmListrikById(widget.detailId.toString());
 
       if (skuData != null) {
-        provider.fillFormWithExistingDataUpdate(
+        provider.fillFormWithExistingData(
           sktmListrikData: skuData,
           jkList: dataProvider.jenisKelaminList,
           pekerjaanList: dataProvider.pekerjaanList,
@@ -100,8 +100,8 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer4<SktmListrikProvider, DataProvider, KartuKeluargaProvider,
-        TrackingSuratProvider>(
+    return Consumer4<SktmListrikEditProvider, DataProvider,
+        KartuKeluargaProvider, TrackingSuratProvider>(
       builder:
           (context, provider, dataProvider, kkProvider, trackingProvider, _) =>
               Scaffold(
@@ -161,11 +161,11 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
                         // Perbaikan untuk NIK dropdown di SktmListrikEditScreen
                         buildLabel('NIK', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedNikIdUpdate,
+                          selectedValue: provider.selectedNikId,
                           onChanged: (value) {
                             // PERBAIKAN: Pastikan value ter-set dengan benar
                             debugPrint('NIK dropdown changed: $value');
-                            provider.setSelectedNikUpdate;
+                            provider.setSelectedNik;
 
                             // Optional: Auto-fill data lain berdasarkan NIK yang dipilih
                             if (value != null &&
@@ -177,20 +177,19 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
                               );
 
                               // Auto-fill beberapa field berdasarkan data KK
-                              provider.namaControllerUpdate.text =
+                              provider.namaController.text =
                                   selectedAnggota.name;
-                              provider.alamatControllerUpdate.text =
+                              provider.alamatController.text =
                                   selectedAnggota.alamat;
 
                               // Set dropdown values
-                              provider.setSelectedHubunganIdUpdate(
+                              provider.setSelectedHubunganId(
                                   selectedAnggota.hubungan);
-                              provider.setSelectedKelaminIdUpdate(
-                                  selectedAnggota.jk);
-                              provider.setSelectedPekerjaanIdUpdate(
+                              provider.setSelectedKelaminId(selectedAnggota.jk);
+                              provider.setSelectedPekerjaanId(
                                   selectedAnggota.pekerjaan);
-                              provider.setSelectedAgamaIdCreate(
-                                  selectedAnggota.agama);
+                              provider
+                                  .setSelectedAgamaId(selectedAnggota.agama);
                             }
                           },
                           items: kkProvider.data?.anggota
@@ -207,8 +206,8 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
                         ),
                         buildLabel('Status dalam Keluarga', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedHubunganIdUpdate,
-                          onChanged: provider.setSelectedHubunganIdUpdate,
+                          selectedValue: provider.selectedHubunganId,
+                          onChanged: provider.setSelectedHubunganId,
                           items: dataProvider.hubunganList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -220,19 +219,19 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
                         buildLabel('Nama Lengkap', isRequired: true),
                         buildTextField(
                           'Nama lengkap',
-                          provider.namaControllerUpdate,
+                          provider.namaController,
                           isEnabled: true,
                         ),
                         buildLabel('Umur', isRequired: true),
                         buildTextField(
                           'Umur',
-                          provider.namaControllerUpdate,
+                          provider.namaController,
                           isEnabled: true,
                         ),
                         buildLabel('Jenis Kelamin', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedKelaminIdUpdate,
-                          onChanged: provider.setSelectedKelaminIdUpdate,
+                          selectedValue: provider.selectedKelaminId,
+                          onChanged: provider.setSelectedKelaminId,
                           items: dataProvider.jenisKelaminList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -243,8 +242,8 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
                         ),
                         buildLabel('Agama', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedAgamaIdUpdate,
-                          onChanged: provider.setSelectedAgamaIdUpdate,
+                          selectedValue: provider.selectedAgamaId,
+                          onChanged: provider.setSelectedAgamaId,
                           items: dataProvider.agamaList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -255,8 +254,8 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
                         ),
                         buildLabel('Pekerjaan', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedPekerjaanIdUpdate,
-                          onChanged: provider.setSelectedPekerjaanIdUpdate,
+                          selectedValue: provider.selectedPekerjaanId,
+                          onChanged: provider.setSelectedPekerjaanId,
                           items: dataProvider.pekerjaanList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -267,8 +266,8 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
                         ),
                         buildLabel('Penghasilan', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedPenghasilanIdUpdate,
-                          onChanged: provider.setSelectedPenghasilanIdUpdate,
+                          selectedValue: provider.selectedPenghasilanId,
+                          onChanged: provider.setSelectedPenghasilanId,
                           items: dataProvider.penghasilanList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -280,20 +279,20 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
                         buildLabel('Nama PLN', isRequired: true),
                         buildTextField(
                           'Nama PLN',
-                          provider.namaPlnControllerUpdate,
+                          provider.namaPlnController,
                           isEnabled: true,
                         ),
                         buildLabel('Alamat', isRequired: true),
                         buildTextField(
                           'Alamat',
-                          provider.alamatControllerUpdate,
+                          provider.alamatController,
                           maxLines: 3,
                           isEnabled: true,
                         ),
-                        buildLabel('Upload Kartu Tanda Penduduk (Baru)',
+                        buildLabel('Upload Kartu Keluarga Baru',
                             isRequired: true),
                         GestureDetector(
-                          onTap: () => provider.pickKKFileUpdate(context),
+                          onTap: () => provider.pickFile(context),
                           child: Container(
                             height: 48,
                             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -307,8 +306,8 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
-                                    provider.selectedFileNameUpdate ??
-                                        'Pilih file KTP baru...',
+                                    provider.selectedFileName ??
+                                        'Pilih file KK baru...',
                                     style: const TextStyle(
                                         color: Colors.black54, fontSize: 16),
                                     overflow: TextOverflow.ellipsis,
@@ -331,19 +330,19 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
                                     print(
                                         'Form valid: ${_formKey.currentState?.validate()}');
                                     print(
-                                        'selectedNikIdUpdate: ${provider.selectedNikIdUpdate}');
+                                        'selectedNikId: ${provider.selectedNikId}');
                                     print(
-                                        'selectedHubunganIdUpdate: ${provider.selectedHubunganIdUpdate}');
+                                        'selectedHubunganId: ${provider.selectedHubunganId}');
                                     print(
-                                        'selectedKelaminIdUpdate: ${provider.selectedKelaminIdUpdate}');
+                                        'selectedKelaminId: ${provider.selectedKelaminId}');
                                     print(
-                                        'selectedPekerjaanIdUpdate: ${provider.selectedPekerjaanIdUpdate}');
+                                        'selectedPekerjaanId: ${provider.selectedPekerjaanId}');
                                     print(
-                                        'namaControllerUpdate: "${provider.namaControllerUpdate.text}"');
+                                        'namaController: "${provider.namaController.text}"');
                                     print(
-                                        'alamatControllerUpdate: "${provider.alamatControllerUpdate.text}"');
+                                        'alamatController: "${provider.alamatController.text}"');
                                     print(
-                                        'selectedFileUpdate: ${provider.selectedFileUpdate?.name}');
+                                        'selectedFile: ${provider.selectedFile?.name}');
 
                                     // Validasi form terlebih dahulu
                                     if (!_formKey.currentState!.validate()) {
@@ -361,28 +360,24 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
                                     // Validasi manual untuk dropdown yang mungkin tidak ter-handle oleh form validation
                                     List<String> missingFields = [];
 
-                                    if (provider.selectedNikIdUpdate == null) {
+                                    if (provider.selectedNikId == null) {
                                       missingFields.add('NIK');
                                     }
-                                    if (provider.selectedHubunganIdUpdate ==
-                                        null) {
+                                    if (provider.selectedHubunganId == null) {
                                       missingFields
                                           .add('Status dalam Keluarga');
                                     }
-                                    if (provider.selectedKelaminIdUpdate ==
-                                        null) {
+                                    if (provider.selectedKelaminId == null) {
                                       missingFields.add('Jenis Kelamin');
                                     }
-                                    if (provider.selectedPekerjaanIdUpdate ==
-                                        null) {
+                                    if (provider.selectedPekerjaanId == null) {
                                       missingFields.add('Pekerjaan');
                                     }
-                                    if (provider.selectedPenghasilanIdUpdate ==
+                                    if (provider.selectedPenghasilanId ==
                                         null) {
                                       missingFields.add('Penghasilan');
                                     }
-                                    if (provider.selectedAgamaIdUpdate ==
-                                        null) {
+                                    if (provider.selectedAgamaId == null) {
                                       missingFields.add('Agama');
                                     }
 
@@ -398,12 +393,12 @@ class _SktmListrikEditScreenState extends State<SktmListrikEditScreen> {
                                       return;
                                     }
 
-                                    if (provider.selectedFileUpdate == null) {
+                                    if (provider.selectedFile == null) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
                                           content:
-                                              Text('File KTP harus dipilih'),
+                                              Text('File KK harus dipilih'),
                                           backgroundColor: Colors.red,
                                         ),
                                       );

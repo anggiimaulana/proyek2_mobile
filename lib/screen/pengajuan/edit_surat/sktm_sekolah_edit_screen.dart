@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:proyek2/provider/pengajuan/data/data_provider2.dart';
+import 'package:proyek2/provider/pengajuan/edit/sktm_sekolah_edit_provider.dart';
 import 'package:proyek2/provider/pengajuan/kartu_keluarga_provider.dart';
-import 'package:proyek2/provider/pengajuan/sktm_sekolah_provider.dart';
 import 'package:proyek2/provider/pengajuan/tracking_surat_provider.dart';
 import 'package:proyek2/style/colors.dart';
 
@@ -68,18 +68,19 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
   }
 
   Future<void> _loadSktmSekolahData() async {
-    final provider = Provider.of<SktmSekolahProvider>(context, listen: false);
+    final provider =
+        Provider.of<SktmSekolahEditProvider>(context, listen: false);
     final dataProvider = Provider.of<DataProvider>(context, listen: false);
     final kkProvider =
         Provider.of<KartuKeluargaProvider>(context, listen: false);
 
     try {
-      final sktmListrik =
+      final sktmData =
           await provider.fetchSktmSekolahById(widget.detailId.toString());
 
-      if (sktmListrik != null) {
-        provider.fillFormWithExistingDataUpdate(
-          sktmListrik: sktmListrik,
+      if (sktmData != null) {
+        provider.fillFormWithExistingData(
+          sktmData: sktmData,
           jkList: dataProvider.jenisKelaminList,
           pekerjaanList: dataProvider.pekerjaanList,
           agamaList: dataProvider.agamaList,
@@ -99,8 +100,8 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer4<SktmSekolahProvider, DataProvider, KartuKeluargaProvider,
-        TrackingSuratProvider>(
+    return Consumer4<SktmSekolahEditProvider, DataProvider,
+        KartuKeluargaProvider, TrackingSuratProvider>(
       builder:
           (context, provider, dataProvider, kkProvider, trackingProvider, _) =>
               Scaffold(
@@ -160,11 +161,11 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                         // Perbaikan untuk NIK dropdown di SktmSekolahEditScreen
                         buildLabel('NIK', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedNikIdUpdate,
+                          selectedValue: provider.selectedNikId,
                           onChanged: (value) {
                             // PERBAIKAN: Pastikan value ter-set dengan benar
                             debugPrint('NIK dropdown changed: $value');
-                            provider.setSelectedNikIdUpdate(value);
+                            provider.setSelectedNikId(value);
 
                             // Optional: Auto-fill data lain berdasarkan NIK yang dipilih
                             if (value != null &&
@@ -176,33 +177,32 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                               );
 
                               // Auto-fill beberapa field berdasarkan data KK
-                              provider.namaAnakControllerUpdate.text =
+                              provider.namaAnakController.text =
                                   selectedAnggota.name;
-                              provider.alamatControllerUpdate.text =
+                              provider.alamatController.text =
                                   selectedAnggota.alamat;
-                              provider.tempatLahirAnakControllerUpdate.text =
+                              provider.tempatLahirAnakController.text =
                                   selectedAnggota.tempatLahir;
 
                               // Set tanggal lahir
                               try {
                                 final date = DateTime.parse(
                                     selectedAnggota.tanggalLahir);
-                                provider.selectedDateAnakUpdate = date;
-                                provider.tanggalLahirAnakControllerUpdate.text =
+                                provider.selectedDateAnak = date;
+                                provider.tanggalLahirAnakController.text =
                                     DateFormat('yyyy-MM-dd').format(date);
                               } catch (e) {
                                 debugPrint('Error parsing birth date: $e');
                               }
 
                               // Set dropdown values
-                              provider.setSelectedHubunganIdUpdate(
+                              provider.setSelectedHubunganId(
                                   selectedAnggota.hubungan);
-                              provider.setSelectedKelaminIdUpdate(
-                                  selectedAnggota.jk);
-                              provider.setSelectedPekerjaanIdUpdate(
+                              provider.setSelectedKelaminId(selectedAnggota.jk);
+                              provider.setSelectedPekerjaanId(
                                   selectedAnggota.pekerjaan);
-                              provider.setSelectedAgamaIdUpdate(
-                                  selectedAnggota.agama);
+                              provider
+                                  .setSelectedAgamaId(selectedAnggota.agama);
                             }
                           },
                           items: kkProvider.data?.anggota
@@ -219,8 +219,8 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                         ),
                         buildLabel('Status dalam Keluarga', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedHubunganIdUpdate,
-                          onChanged: provider.setSelectedHubunganIdUpdate,
+                          selectedValue: provider.selectedHubunganId,
+                          onChanged: provider.setSelectedHubunganId,
                           items: dataProvider.hubunganList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -232,30 +232,30 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                         buildLabel('Nama Lengkap Orang Tua', isRequired: true),
                         buildTextField(
                           'Nama lengkap',
-                          provider.namaOrtuControllerUpdate,
+                          provider.namaOrtuController,
                           isEnabled: true,
                         ),
                         buildLabel('Tempat Lahir Orang Tua', isRequired: true),
                         buildTextField(
                           'Tempat lahir',
-                          provider.tempatLahirOrtuControllerUpdate,
+                          provider.tempatLahirOrtuController,
                           isEnabled: true,
                         ),
                         buildLabel('Tanggal Lahir Orang Tua', isRequired: true),
                         GestureDetector(
-                          onTap: () => provider.selectDateOrtuUpdate(context),
+                          onTap: () => provider.selectDateOrtu(context),
                           child: AbsorbPointer(
                             child: buildTextField(
                               'Tanggal lahir Orang Tua',
-                              provider.tanggalLahirOrtuControllerUpdate,
+                              provider.tanggalLahirOrtuController,
                               isEnabled: true,
                             ),
                           ),
                         ),
                         buildLabel('Agama', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedAgamaIdUpdate,
-                          onChanged: provider.setSelectedAgamaIdUpdate,
+                          selectedValue: provider.selectedAgamaId,
+                          onChanged: provider.setSelectedAgamaId,
                           items: dataProvider.agamaList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -266,8 +266,8 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                         ),
                         buildLabel('Pekerjaan', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedPekerjaanIdUpdate,
-                          onChanged: provider.setSelectedPekerjaanIdUpdate,
+                          selectedValue: provider.selectedPekerjaanId,
+                          onChanged: provider.setSelectedPekerjaanId,
                           items: dataProvider.pekerjaanList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -279,37 +279,37 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                         buildLabel('Alamat', isRequired: true),
                         buildTextField(
                           'Alamat',
-                          provider.alamatControllerUpdate,
+                          provider.alamatController,
                           maxLines: 3,
                           isEnabled: true,
                         ),
                         buildLabel('Nama Lengkap Anak', isRequired: true),
                         buildTextField(
                           'Nama lengkap',
-                          provider.namaAnakControllerUpdate,
+                          provider.namaAnakController,
                           isEnabled: true,
                         ),
                         buildLabel('Tempat Lahir Anak', isRequired: true),
                         buildTextField(
                           'Tempat lahir',
-                          provider.tempatLahirAnakControllerUpdate,
+                          provider.tempatLahirAnakController,
                           isEnabled: true,
                         ),
                         buildLabel('Tanggal Lahir', isRequired: true),
                         GestureDetector(
-                          onTap: () => provider.selectDateAnakUpdate(context),
+                          onTap: () => provider.selectDateAnak(context),
                           child: AbsorbPointer(
                             child: buildTextField(
                               'Tanggal lahir',
-                              provider.tanggalLahirAnakControllerUpdate,
+                              provider.tanggalLahirAnakController,
                               isEnabled: true,
                             ),
                           ),
                         ),
                         buildLabel('Jenis Kelamin', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedKelaminIdUpdate,
-                          onChanged: provider.setSelectedKelaminIdUpdate,
+                          selectedValue: provider.selectedKelaminId,
+                          onChanged: provider.setSelectedKelaminId,
                           items: dataProvider.jenisKelaminList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -321,19 +321,19 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                         buildLabel('Nama Sekolah', isRequired: true),
                         buildTextField(
                           'Nama usaha Sekolah',
-                          provider.namaSekolahControllerUpdate,
+                          provider.namaSekolahController,
                           isEnabled: true,
                         ),
                         buildLabel('Kelas', isRequired: true),
                         buildTextField(
                           'Nama usaha Sekolah',
-                          provider.kelasAnakControllerUpdate,
+                          provider.kelasAnakController,
                           isEnabled: true,
                         ),
-                        buildLabel('Upload Kartu Tanda Penduduk (Baru)',
+                        buildLabel('Upload Kartu Keluarga Baru',
                             isRequired: true),
                         GestureDetector(
-                          onTap: () => provider.pickKKFileUpdate(context),
+                          onTap: () => provider.pickKKFile(context),
                           child: Container(
                             height: 48,
                             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -347,8 +347,8 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
-                                    provider.selectedFileNameUpdate ??
-                                        'Pilih file KTP baru...',
+                                    provider.selectedFileName ??
+                                        'Pilih file KK baru...',
                                     style: const TextStyle(
                                         color: Colors.black54, fontSize: 16),
                                     overflow: TextOverflow.ellipsis,
@@ -371,35 +371,35 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                                     print(
                                         'Form valid: ${_formKey.currentState?.validate()}');
                                     print(
-                                        'selectedNikIdUpdate: ${provider.selectedNikIdUpdate}');
+                                        'selectedNikId: ${provider.selectedNikId}');
                                     print(
-                                        'selectedHubunganIdUpdate: ${provider.selectedHubunganIdUpdate}');
+                                        'selectedHubunganId: ${provider.selectedHubunganId}');
                                     print(
-                                        'selectedKelaminIdUpdate: ${provider.selectedKelaminIdUpdate}');
+                                        'selectedKelaminId: ${provider.selectedKelaminId}');
                                     print(
-                                        'selectedPekerjaanIdUpdate: ${provider.selectedPekerjaanIdUpdate}');
+                                        'selectedPekerjaanId: ${provider.selectedPekerjaanId}');
                                     print(
-                                        'selectedAgamaIdUpdate: ${provider.selectedAgamaIdUpdate}');
+                                        'selectedAgamaId: ${provider.selectedAgamaId}');
                                     print(
-                                        'namaControllerUpdate: "${provider.namaAnakControllerUpdate.text}"');
+                                        'namaController: "${provider.namaAnakController.text}"');
                                     print(
-                                        'tempatLahirControllerUpdate: "${provider.tempatLahirAnakControllerUpdate.text}"');
+                                        'tempatLahirController: "${provider.tempatLahirAnakController.text}"');
                                     print(
-                                        'tanggalLahirControllerUpdate: "${provider.tanggalLahirAnakControllerUpdate.text}"');
+                                        'tanggalLahirController: "${provider.tanggalLahirAnakController.text}"');
                                     print(
-                                        'namaControllerUpdate: "${provider.namaOrtuControllerUpdate.text}"');
+                                        'namaController: "${provider.namaOrtuController.text}"');
                                     print(
-                                        'tempatLahirControllerUpdate: "${provider.tempatLahirOrtuControllerUpdate.text}"');
+                                        'tempatLahirController: "${provider.tempatLahirOrtuController.text}"');
                                     print(
-                                        'tanggalLahirControllerUpdate: "${provider.tanggalLahirOrtuControllerUpdate.text}"');
+                                        'tanggalLahirController: "${provider.tanggalLahirOrtuController.text}"');
                                     print(
-                                        'alamatControllerUpdate: "${provider.alamatControllerUpdate.text}"');
+                                        'alamatController: "${provider.alamatController.text}"');
                                     print(
-                                        'namaUsahaUpdate: "${provider.namaSekolahControllerUpdate.text}"');
+                                        'namaUsaha: "${provider.namaSekolahController.text}"');
                                     print(
-                                        'namaUsahaUpdate: "${provider.kelasAnakControllerUpdate.text}"');
+                                        'namaUsaha: "${provider.kelasAnakController.text}"');
                                     print(
-                                        'selectedFileUpdate: ${provider.selectedFileUpdate?.name}');
+                                        'selectedFile: ${provider.selectedFile?.name}');
 
                                     // Validasi form terlebih dahulu
                                     if (!_formKey.currentState!.validate()) {
@@ -417,24 +417,20 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                                     // Validasi manual untuk dropdown yang mungkin tidak ter-handle oleh form validation
                                     List<String> missingFields = [];
 
-                                    if (provider.selectedNikIdUpdate == null) {
+                                    if (provider.selectedNikId == null) {
                                       missingFields.add('NIK');
                                     }
-                                    if (provider.selectedHubunganIdUpdate ==
-                                        null) {
+                                    if (provider.selectedHubunganId == null) {
                                       missingFields
                                           .add('Status dalam Keluarga');
                                     }
-                                    if (provider.selectedKelaminIdUpdate ==
-                                        null) {
+                                    if (provider.selectedKelaminId == null) {
                                       missingFields.add('Jenis Kelamin');
                                     }
-                                    if (provider.selectedPekerjaanIdUpdate ==
-                                        null) {
+                                    if (provider.selectedPekerjaanId == null) {
                                       missingFields.add('Pekerjaan');
                                     }
-                                    if (provider.selectedAgamaIdUpdate ==
-                                        null) {
+                                    if (provider.selectedAgamaId == null) {
                                       missingFields.add('Agama');
                                     }
 
@@ -450,12 +446,12 @@ class _SktmSekolahEditScreenState extends State<SktmSekolahEditScreen> {
                                       return;
                                     }
 
-                                    if (provider.selectedFileUpdate == null) {
+                                    if (provider.selectedFile == null) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(
                                           content:
-                                              Text('File KTP harus dipilih'),
+                                              Text('File KK harus dipilih'),
                                           backgroundColor: Colors.red,
                                         ),
                                       );

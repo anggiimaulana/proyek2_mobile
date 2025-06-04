@@ -1,19 +1,29 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:proyek2/check_auth_screen.dart';
 import 'package:proyek2/data/models/informasi_umum/data_kk_hive_model.dart';
+import 'package:proyek2/firebase_options.dart';
 import 'package:proyek2/provider/auth/auth_provider.dart';
 import 'package:proyek2/provider/pengajuan/data/data_provider2.dart';
+import 'package:proyek2/provider/pengajuan/edit/skbm_edit_provider.dart';
+import 'package:proyek2/provider/pengajuan/edit/skp_edit_provider.dart';
+import 'package:proyek2/provider/pengajuan/edit/skpot_edit_provider.dart';
+import 'package:proyek2/provider/pengajuan/edit/sks_edit_provider.dart';
+import 'package:proyek2/provider/pengajuan/edit/sktm_beasiswa_edit_provider.dart';
+import 'package:proyek2/provider/pengajuan/edit/sktm_listrik_edit_provider.dart';
+import 'package:proyek2/provider/pengajuan/edit/sktm_sekolah_edit_provider.dart';
+import 'package:proyek2/provider/pengajuan/edit/sku_edit_provider.dart';
 import 'package:proyek2/provider/pengajuan/kartu_keluarga_provider.dart';
-import 'package:proyek2/provider/pengajuan/skbm_provider.dart';
-import 'package:proyek2/provider/pengajuan/skp_provider.dart';
-import 'package:proyek2/provider/pengajuan/skpot_provider.dart';
-import 'package:proyek2/provider/pengajuan/sks_provider.dart';
-import 'package:proyek2/provider/pengajuan/sktm_beasiswa_provider.dart';
-import 'package:proyek2/provider/pengajuan/sktm_listrik_provider.dart';
-import 'package:proyek2/provider/pengajuan/sktm_sekolah_provider.dart';
-import 'package:proyek2/provider/pengajuan/sku_provider.dart';
+import 'package:proyek2/provider/pengajuan/create/skbm_create_provider.dart';
+import 'package:proyek2/provider/pengajuan/create/skp_create_provider.dart';
+import 'package:proyek2/provider/pengajuan/create/skpot_create_provider.dart';
+import 'package:proyek2/provider/pengajuan/create/sks_create_provider.dart';
+import 'package:proyek2/provider/pengajuan/create/sktm_beasiswa_create_provider.dart';
+import 'package:proyek2/provider/pengajuan/create/sktm_listrik_create_provider.dart';
+import 'package:proyek2/provider/pengajuan/create/sktm_sekolah_create_provider.dart';
+import 'package:proyek2/provider/pengajuan/create/sku_create_provider.dart';
 import 'package:proyek2/provider/pengajuan/tracking_surat_provider.dart';
 import 'package:proyek2/service/global_navigation_service.dart';
 import 'package:proyek2/service/notification_service.dart';
@@ -25,6 +35,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   final dir = await getApplicationDocumentsDirectory();
   Hive.init(dir.path);
@@ -40,14 +53,24 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => DataProvider()),
         ChangeNotifierProvider(create: (_) => KartuKeluargaProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => SktmListrikProvider()),
-        ChangeNotifierProvider(create: (_) => SktmBeasiswaProvider()),
-        ChangeNotifierProvider(create: (_) => SktmSekolahProvider()),
-        ChangeNotifierProvider(create: (_) => SkpotProvider()),
-        ChangeNotifierProvider(create: (_) => SksProvider()),
-        ChangeNotifierProvider(create: (_) => SkbmProvider()),
-        ChangeNotifierProvider(create: (_) => SkpProvider()),
-        ChangeNotifierProvider(create: (_) => SkuProvider()),
+        ChangeNotifierProvider(create: (_) => SktmListrikCreateProvider()),
+        ChangeNotifierProvider(create: (_) => SktmListrikEditProvider()),
+        ChangeNotifierProvider(create: (_) => SktmBeasiswaCreateProvider()),
+        ChangeNotifierProvider(create: (_) => SktmBeasiswaEditProvider()),
+        ChangeNotifierProvider(create: (_) => SktmSekolahCreateProvider()),
+        ChangeNotifierProvider(create: (_) => SktmSekolahEditProvider()),
+        ChangeNotifierProvider(create: (_) => SkpotCreateProvider()),
+        ChangeNotifierProvider(create: (_) => SkpotEditProvider()),
+        ChangeNotifierProvider(create: (_) => SksCreateProvider()),
+        ChangeNotifierProvider(create: (_) => SksEditProvider()),
+        ChangeNotifierProvider(create: (_) => SkbmCreateProvider()),
+        ChangeNotifierProvider(create: (_) => SkbmEditProvider()),
+        ChangeNotifierProvider(create: (_) => SkpCreateProvider()),
+        ChangeNotifierProvider(create: (_) => SkpEditProvider()),
+        ChangeNotifierProvider(create: (_) => SkuCreateProvider()),
+        ChangeNotifierProvider(
+          create: (_) => SkuEditProvider(),
+        ),
         ChangeNotifierProvider(create: (_) => TrackingSuratProvider()),
       ],
       child: const MyApp(),
@@ -57,16 +80,14 @@ Future<void> main() async {
 
 Future<void> _initializeGlobalNotifications() async {
   try {
-    // Initialize the global notification service
     await GlobalNotificationService().initialize();
 
-    // Check if user is logged in and start monitoring
     final prefs = await SharedPreferences.getInstance();
     final clientId = prefs.getInt('client_id');
     final token = prefs.getString('token');
 
     if (clientId != null && token != null) {
-      // User is logged in, start global monitoring
+      // Jika user sudah login, mulai monitoring global notifications
       await GlobalNotificationService().startGlobalMonitoring();
       debugPrint(
           "🚀 Global notification monitoring started for user: $clientId");
@@ -89,12 +110,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // Add global navigator key for notification navigation
       navigatorKey: GlobalNavigationService.navigatorKey,
       home: const PermissionHandlerWrapper(),
       routes: {
         ...appRoutes,
-        // Add debug route untuk testing
         '/debug_notifications': (context) => const DebugNotificationScreen(),
       },
     );
@@ -186,7 +205,7 @@ class _PermissionHandlerWrapperState extends State<PermissionHandlerWrapper>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this); // Add lifecycle observer
+    WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _mintaIzin();
       setState(() {
@@ -270,7 +289,7 @@ class _PermissionHandlerWrapperState extends State<PermissionHandlerWrapper>
       var notif = await Permission.notification.request();
 
       debugPrint(
-          "🔐 Permissions - Storage: $storage, ManageStorage: $manageStorage, Notification: $notif");
+          "Permissions - Storage: $storage, ManageStorage: $manageStorage, Notification: $notif");
 
       if (!(storage.isGranted || manageStorage.isGranted || notif.isGranted)) {
         await openAppSettings();

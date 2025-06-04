@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:proyek2/provider/pengajuan/data/data_provider2.dart';
+import 'package:proyek2/provider/pengajuan/edit/skpot_edit_provider.dart';
 import 'package:proyek2/provider/pengajuan/kartu_keluarga_provider.dart';
-import 'package:proyek2/provider/pengajuan/skpot_provider.dart';
 import 'package:proyek2/provider/pengajuan/tracking_surat_provider.dart';
 import 'package:proyek2/style/colors.dart';
 
@@ -68,7 +68,7 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
   }
 
   Future<void> _loadSkpot() async {
-    final provider = Provider.of<SkpotProvider>(context, listen: false);
+    final provider = Provider.of<SkpotEditProvider>(context, listen: false);
     final dataProvider = Provider.of<DataProvider>(context, listen: false);
     final kkProvider =
         Provider.of<KartuKeluargaProvider>(context, listen: false);
@@ -79,14 +79,13 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
 
       if (skpotBeasiswa != null) {
         provider.fillFormWithExistingDataUpdate(
-          skpotBeasiswa: skpotBeasiswa,
-          jkList: dataProvider.jenisKelaminList,
-          pekerjaanList: dataProvider.pekerjaanList,
-          agamaList: dataProvider.agamaList,
-          hubunganList: dataProvider.hubunganList,
-          nikList: kkProvider.data?.anggota,
-          penghasilanList: dataProvider.penghasilanList
-        );
+            skpotBeasiswa: skpotBeasiswa,
+            jkList: dataProvider.jenisKelaminList,
+            pekerjaanList: dataProvider.pekerjaanList,
+            agamaList: dataProvider.agamaList,
+            hubunganList: dataProvider.hubunganList,
+            nikList: kkProvider.data?.anggota,
+            penghasilanList: dataProvider.penghasilanList);
       }
     } catch (e) {
       debugPrint('Error loading SKU data: $e');
@@ -100,7 +99,7 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer4<SkpotProvider, DataProvider, KartuKeluargaProvider,
+    return Consumer4<SkpotEditProvider, DataProvider, KartuKeluargaProvider,
         TrackingSuratProvider>(
       builder:
           (context, provider, dataProvider, kkProvider, trackingProvider, _) =>
@@ -161,11 +160,11 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                         // Perbaikan untuk NIK dropdown di SkpotEditScreen
                         buildLabel('NIK', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedNikIdUpdate,
+                          selectedValue: provider.selectedNikId,
                           onChanged: (value) {
                             // PERBAIKAN: Pastikan value ter-set dengan benar
                             debugPrint('NIK dropdown changed: $value');
-                            provider.setSelectedNikUpdate;
+                            provider.setSelectedNik;
 
                             // Optional: Auto-fill data lain berdasarkan NIK yang dipilih
                             if (value != null &&
@@ -177,31 +176,30 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                               );
 
                               // Auto-fill beberapa field berdasarkan data KK
-                              provider.namaAnakControllerUpdate.text =
+                              provider.namaAnakController.text =
                                   selectedAnggota.name;
-                              provider.alamatControllerUpdate.text =
+                              provider.alamatController.text =
                                   selectedAnggota.alamat;
-                              provider.tempatLahirControllerUpdate.text =
+                              provider.tempatLahirController.text =
                                   selectedAnggota.tempatLahir;
 
                               // Set tanggal lahir
                               try {
                                 final date = DateTime.parse(
                                     selectedAnggota.tanggalLahir);
-                                provider.selectedDateUpdate = date;
-                                provider.tanggalLahirControllerUpdate.text =
+                                provider.selectedDate = date;
+                                provider.tanggalLahirController.text =
                                     DateFormat('yyyy-MM-dd').format(date);
                               } catch (e) {
                                 debugPrint('Error parsing birth date: $e');
                               }
 
                               // Set dropdown values
-                              provider.setSelectedHubunganIdUpdate(
+                              provider.setSelectedHubunganId(
                                   selectedAnggota.hubungan);
-                              provider.setSelectedKelaminIdUpdate(
-                                  selectedAnggota.jk);
-                              provider.setSelectedAgamaIdUpdate(
-                                  selectedAnggota.agama);
+                              provider.setSelectedKelaminId(selectedAnggota.jk);
+                              provider
+                                  .setSelectedAgamaId(selectedAnggota.agama);
                             }
                           },
                           items: kkProvider.data?.anggota
@@ -218,8 +216,8 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                         ),
                         buildLabel('Status dalam Keluarga', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedHubunganIdUpdate,
-                          onChanged: provider.setSelectedHubunganIdUpdate,
+                          selectedValue: provider.selectedHubunganId,
+                          onChanged: provider.setSelectedHubunganId,
                           items: dataProvider.hubunganList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -231,30 +229,30 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                         buildLabel('Nama Lengkap Anak', isRequired: true),
                         buildTextField(
                           'Nama lengkap',
-                          provider.namaAnakControllerUpdate,
+                          provider.namaAnakController,
                           isEnabled: true,
                         ),
                         buildLabel('Tempat Lahir Anak', isRequired: true),
                         buildTextField(
                           'Tempat lahir',
-                          provider.tempatLahirControllerUpdate,
+                          provider.tempatLahirController,
                           isEnabled: true,
                         ),
                         buildLabel('Tanggal Lahir Anak', isRequired: true),
                         GestureDetector(
-                          onTap: () => provider.selectedDateUpdate,
+                          onTap: () => provider.selectedDate,
                           child: AbsorbPointer(
                             child: buildTextField(
                               'Tanggal lahir',
-                              provider.tanggalLahirControllerUpdate,
+                              provider.tanggalLahirController,
                               isEnabled: true,
                             ),
                           ),
                         ),
                         buildLabel('Jenis Kelamin', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedKelaminIdUpdate,
-                          onChanged: provider.setSelectedKelaminIdUpdate,
+                          selectedValue: provider.selectedKelaminId,
+                          onChanged: provider.setSelectedKelaminId,
                           items: dataProvider.jenisKelaminList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -265,8 +263,8 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                         ),
                         buildLabel('Agama', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedAgamaIdUpdate,
-                          onChanged: provider.setSelectedAgamaIdUpdate,
+                          selectedValue: provider.selectedAgamaId,
+                          onChanged: provider.setSelectedAgamaId,
                           items: dataProvider.agamaList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -278,13 +276,13 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                         buildLabel('Nama Lengkap Orang Tua', isRequired: true),
                         buildTextField(
                           'Nama lengkap orang tua',
-                          provider.namaOrtuControllerUpdate,
+                          provider.namaOrtuController,
                           isEnabled: true,
                         ),
                         buildLabel('Pekerjaan Orang Tua', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedPekerjaanOrtuIdUpdate,
-                          onChanged: provider.setSelectedPekerjaanOrtuIdUpdate,
+                          selectedValue: provider.selectedPekerjaanOrtuId,
+                          onChanged: provider.setSelectedPekerjaanOrtuId,
                           items: dataProvider.pekerjaanList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -295,8 +293,8 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                         ),
                         buildLabel('Penghasilan Orang Tua', isRequired: true),
                         buildDropdownDynamic(
-                          selectedValue: provider.selectedPenghasilanOrtuIdUpdate,
-                          onChanged: provider.setSelectedPenghasilanOrtuIdUpdate,
+                          selectedValue: provider.selectedPenghasilanOrtuId,
+                          onChanged: provider.setSelectedPenghasilanOrtuId,
                           items: dataProvider.penghasilanList
                               .map((e) => DropdownMenuItem(
                                     value: e.id,
@@ -308,14 +306,14 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                         buildLabel('Alamat', isRequired: true),
                         buildTextField(
                           'Alamat',
-                          provider.alamatControllerUpdate,
+                          provider.alamatController,
                           maxLines: 3,
                           isEnabled: true,
                         ),
-                        buildLabel('Upload Kartu Tanda Penduduk (Baru)',
+                        buildLabel('Upload Kartu Keluarga Baru',
                             isRequired: true),
                         GestureDetector(
-                          onTap: () => provider.pickKKFileUpdate(context),
+                          onTap: () => provider.pickKKFile(context),
                           child: Container(
                             height: 48,
                             padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -329,7 +327,7 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Text(
-                                    provider.selectedFileNameUpdate ??
+                                    provider.selectedFileName ??
                                         'Pilih file KK baru...',
                                     style: const TextStyle(
                                         color: Colors.black54, fontSize: 16),
@@ -353,31 +351,31 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                                     print(
                                         'Form valid: ${_formKey.currentState?.validate()}');
                                     print(
-                                        'selectedNikIdUpdate: ${provider.selectedNikIdUpdate}');
+                                        'selectedNikId: ${provider.selectedNikId}');
                                     print(
-                                        'selectedHubunganIdUpdate: ${provider.selectedHubunganIdUpdate}');
+                                        'selectedHubunganId: ${provider.selectedHubunganId}');
                                     print(
-                                        'selectedKelaminIdUpdate: ${provider.selectedKelaminIdUpdate}');
+                                        'selectedKelaminId: ${provider.selectedKelaminId}');
                                     print(
-                                        'selectedPekerjaanOrtuIdUpdate: ${provider.selectedPekerjaanOrtuIdUpdate}');
+                                        'selectedPekerjaanOrtuId: ${provider.selectedPekerjaanOrtuId}');
                                     print(
-                                        'selectedAgamaIdUpdate: ${provider.selectedAgamaIdUpdate}');
+                                        'selectedAgamaId: ${provider.selectedAgamaId}');
                                     print(
-                                        'namaControllerUpdate: "${provider.namaAnakControllerUpdate.text}"');
+                                        'namaController: "${provider.namaAnakController.text}"');
                                     print(
-                                        'tempatLahirControllerUpdate: "${provider.tempatLahirControllerUpdate.text}"');
+                                        'tempatLahirController: "${provider.tempatLahirController.text}"');
                                     print(
-                                        'tanggalLahirControllerUpdate: "${provider.tanggalLahirControllerUpdate.text}"');
+                                        'tanggalLahirController: "${provider.tanggalLahirController.text}"');
                                     print(
-                                        'namaControllerUpdate: "${provider.namaOrtuControllerUpdate.text}"');
+                                        'namaController: "${provider.namaOrtuController.text}"');
                                     print(
-                                        'tempatLahirControllerUpdate: "${provider.tempatLahirControllerUpdate.text}"');
+                                        'tempatLahirController: "${provider.tempatLahirController.text}"');
                                     print(
-                                        'tanggalLahirControllerUpdate: "${provider.tanggalLahirControllerUpdate.text}"');
+                                        'tanggalLahirController: "${provider.tanggalLahirController.text}"');
                                     print(
-                                        'alamatControllerUpdate: "${provider.alamatControllerUpdate.text}"');
+                                        'alamatController: "${provider.alamatController.text}"');
                                     print(
-                                        'selectedFileUpdate: ${provider.selectedFileUpdate?.name}');
+                                        'selectedFile: ${provider.selectedFile?.name}');
 
                                     // Validasi form terlebih dahulu
                                     if (!_formKey.currentState!.validate()) {
@@ -395,29 +393,25 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                                     // Validasi manual untuk dropdown yang mungkin tidak ter-handle oleh form validation
                                     List<String> missingFields = [];
 
-                                    if (provider.selectedNikIdUpdate == null) {
+                                    if (provider.selectedNikId == null) {
                                       missingFields.add('NIK');
                                     }
-                                    if (provider.selectedHubunganIdUpdate ==
-                                        null) {
+                                    if (provider.selectedHubunganId == null) {
                                       missingFields
                                           .add('Status dalam Keluarga');
                                     }
-                                    if (provider.selectedKelaminIdUpdate ==
-                                        null) {
+                                    if (provider.selectedKelaminId == null) {
                                       missingFields.add('Jenis Kelamin');
                                     }
-                                    if (provider
-                                            .selectedPekerjaanOrtuIdUpdate ==
+                                    if (provider.selectedPekerjaanOrtuId ==
                                         null) {
                                       missingFields.add('Pekerjaan');
                                     }
-                                    if (provider.selectedPenghasilanOrtuIdUpdate ==
+                                    if (provider.selectedPenghasilanOrtuId ==
                                         null) {
                                       missingFields.add('Penghasilan');
                                     }
-                                    if (provider.selectedAgamaIdUpdate ==
-                                        null) {
+                                    if (provider.selectedAgamaId == null) {
                                       missingFields.add('Agama');
                                     }
 
@@ -433,7 +427,7 @@ class _SkpotEditScreenState extends State<SkpotEditScreen> {
                                       return;
                                     }
 
-                                    if (provider.selectedFileUpdate == null) {
+                                    if (provider.selectedFile == null) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         const SnackBar(

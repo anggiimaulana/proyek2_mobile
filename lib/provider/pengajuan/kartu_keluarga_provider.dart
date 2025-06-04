@@ -66,7 +66,7 @@ class KartuKeluargaProvider with ChangeNotifier {
       );
 
       final box = await Hive.openBox<KartuKeluargaHive>('kartuKeluarga');
-      await box.clear(); // simpan satu saja
+      await box.clear();
       await box.put('kk', kk);
 
       _data = kk;

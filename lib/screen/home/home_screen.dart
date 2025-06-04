@@ -8,7 +8,7 @@ import 'package:proyek2/style/colors.dart';
 import 'package:proyek2/screen/home/berita_home_widget.dart';
 import 'package:proyek2/screen/home/fitur_utama.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:proyek2/data/models/pengguna/client/client_detail.dart';
+import 'package:proyek2/data/models/client/client_detail.dart';
 
 class AppHomeScreen extends StatefulWidget {
   const AppHomeScreen({super.key});
@@ -170,7 +170,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                         : _userName!)
                     : 'Pengguna',
               ),
-              const SizedBox(height: 150), // FIXED height
+              const SizedBox(height: 150),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -188,7 +188,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                 ),
               ),
               const FiturUtama(),
-              const SizedBox(height: 20), // FIXED height
+              const SizedBox(height: 20),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -207,7 +207,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                 ),
               ),
               const BeritaHome(),
-              const SizedBox(height: 20), // FIXED height
+              const SizedBox(height: 20),
             ],
           ),
         ),

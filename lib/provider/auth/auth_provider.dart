@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:proyek2/data/api/api_services.dart';
 import 'package:proyek2/service/notification_service.dart';
-// import 'package:proyek2/provider/pengajuan/data/data_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
   final ApiServices _apiServices = ApiServices();
-  // final DataProvider _dataProvider = DataProvider();
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -19,8 +17,6 @@ class AuthProvider extends ChangeNotifier {
     try {
       final success = await _apiServices.login(phone, password);
       if (success) {
-        // await _dataProvider.loadAllAndCacheData();
-
         final prefs = await SharedPreferences.getInstance();
         final token = prefs.getString('token') ?? '';
         final clientId = prefs.getInt('client_id') ?? 0;
@@ -65,7 +61,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // Method to restart monitoring (useful for troubleshooting)
   Future<void> restartGlobalMonitoring() async {
     try {
       GlobalNotificationService().stopGlobalMonitoring();
@@ -77,7 +72,6 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  // Get monitoring status for debugging
   String getMonitoringStatus() {
     return GlobalNotificationService().monitoringStatus;
   }

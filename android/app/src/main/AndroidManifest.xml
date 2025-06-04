@@ -58,7 +58,6 @@
             android:value="2" />
     </application>
 
-    <!-- Optional: jika kamu pakai intent share/process text -->
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT" />
