@@ -6,6 +6,8 @@ import 'package:proyek2/check_auth_screen.dart';
 import 'package:proyek2/data/models/informasi_umum/data_kk_hive_model.dart';
 import 'package:proyek2/firebase_options.dart';
 import 'package:proyek2/provider/auth/auth_provider.dart';
+import 'package:proyek2/provider/berita/berita_home_provider.dart';
+import 'package:proyek2/provider/berita/berita_provider.dart';
 import 'package:proyek2/provider/pengajuan/data/data_provider2.dart';
 import 'package:proyek2/provider/pengajuan/edit/skbm_edit_provider.dart';
 import 'package:proyek2/provider/pengajuan/edit/skp_edit_provider.dart';
@@ -32,9 +34,11 @@ import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', null);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -51,6 +55,8 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DataProvider()),
+        ChangeNotifierProvider(create: (_) => BeritaProvider()),
+        ChangeNotifierProvider(create: (_) => BeritaHomeProvider()),
         ChangeNotifierProvider(create: (_) => KartuKeluargaProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => SktmListrikCreateProvider()),

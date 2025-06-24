@@ -181,17 +181,17 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                       style: TextStyle(
                         color: fbackgroundColor4,
                         fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
               ),
               const FiturUtama(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
               Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -200,7 +200,7 @@ class _AppHomeScreenState extends State<AppHomeScreen> {
                       style: TextStyle(
                         color: fbackgroundColor4,
                         fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],

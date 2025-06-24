@@ -25,12 +25,11 @@ class PengajuanScreen extends StatelessWidget {
                       bottomLeft: Radius.circular(0),
                     ),
                   ),
-                  height: 130, 
+                  height: 130,
                   width: double.infinity,
                   alignment: Alignment.topLeft,
                   child: const Padding(
-                    padding:
-                        EdgeInsets.only(left: 20.0, top: 50.0),
+                    padding: EdgeInsets.only(left: 20.0, top: 50.0),
                     child: Text(
                       "Pengajuan Surat",
                       style: TextStyle(
@@ -41,7 +40,7 @@ class PengajuanScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20.0), 
+                const SizedBox(height: 20.0),
 
                 // Tab View
                 const Expanded(
@@ -55,11 +54,11 @@ class PengajuanScreen extends StatelessWidget {
               ],
             ),
             Positioned(
-              top: 95, 
+              top: 95,
               left: 0,
               right: 0,
               child: Container(
-                height: 50, 
+                height: 50,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   color: Color(0xFFF1F5FF),
@@ -80,8 +79,18 @@ class PengajuanScreen extends StatelessWidget {
                   unselectedLabelColor: Colors.blueGrey,
                   indicatorSize: TabBarIndicatorSize.label,
                   indicatorColor: fbackgroundColor4,
+                  labelStyle: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  unselectedLabelStyle: const TextStyle(
+                    fontSize: 15, 
+                    fontWeight: FontWeight.w500,
+                  ),
                   tabs: const [
-                    Tab(text: "Buat Surat"),
+                    Tab(
+                      text: "Buat Surat",
+                    ),
                     Tab(text: "Tracking Surat"),
                   ],
                 ),
