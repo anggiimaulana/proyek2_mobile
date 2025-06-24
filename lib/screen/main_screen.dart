@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:proyek2/screen/bansos/bansos_page.dart';
+import 'package:proyek2/screen/berita/berita_screen..dart';
 import 'package:proyek2/screen/home/home_screen.dart';
-import 'package:proyek2/screen/note/note_screen.dart';
+import 'package:proyek2/screen/pengaduan/pengaduan_screen.dart';
 import 'package:proyek2/screen/pengajuan/pengajuan_screen.dart';
 import 'package:proyek2/style/colors.dart';
 import 'package:iconsax/iconsax.dart';
@@ -43,11 +45,13 @@ class _MainScreenState extends State<MainScreen> {
     final List<Widget> pages = [
       const AppHomeScreen(),
       const PengajuanScreen(),
-      const NoteScreen(),
+      const BansosPage(),
+      const PengaduanScreen(),
+      const BeritaScreen()
     ];
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF1F5FF),
       bottomNavigationBar: Container(
         height: 60,
         decoration: BoxDecoration(
@@ -93,10 +97,24 @@ class _MainScreenState extends State<MainScreen> {
             ),
             BottomNavigationBarItem(
               icon: Icon(
-                Iconsax.note,
+                Iconsax.wallet,
                 size: 22,
               ),
-              label: "Catatan",
+              label: "Bansos",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Iconsax.camera,
+                size: 22,
+              ),
+              label: "Pengaduan",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Iconsax.gallery,
+                size: 22,
+              ),
+              label: "Berita",
             ),
           ],
         ),

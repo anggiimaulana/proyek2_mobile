@@ -22,10 +22,7 @@ class _SkpScreenState extends State<SkpScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      // Load data provider
       Provider.of<DataProvider>(context, listen: false).loadAllAndCacheData();
-
-      // Load KK data
       Provider.of<KartuKeluargaProvider>(context, listen: false)
           .loadFromCache();
       if (Provider.of<KartuKeluargaProvider>(context, listen: false).data ==
@@ -69,7 +66,7 @@ class _SkpScreenState extends State<SkpScreen> {
                   const SizedBox(height: 16),
                   buildLabel('NIK', isRequired: true),
                   kkProvider.isLoading
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const Center(child: ModernLoadingWidget())
                       : buildDropdownNIK(dataProvider, provider, kkProvider),
                   buildLabel('Status dalam Keluarga', isRequired: true),
                   buildDropdownDynamic(
@@ -194,29 +191,18 @@ class _SkpScreenState extends State<SkpScreen> {
                     height: 50,
                     child: ElevatedButton(
                       onPressed: _isSubmitting
-                          ? null // Disable button if submitting
+                          ? null
                           : () async {
                               if (!_formKey.currentState!.validate()) return;
 
                               setState(() {
-                                _isSubmitting =
-                                    true; // Set submitting flag to true
+                                _isSubmitting = true;
                               });
 
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
-                                builder: (_) => const AlertDialog(
-                                  content: Row(
-                                    children: [
-                                      CircularProgressIndicator(),
-                                      SizedBox(width: 40),
-                                      Expanded(
-                                          child: Text(
-                                              'Mengirim data ke server, mohon tunggu.')),
-                                    ],
-                                  ),
-                                ),
+                                builder: (_) => const ModernLoadingDialog(),
                               );
 
                               try {
@@ -225,13 +211,22 @@ class _SkpScreenState extends State<SkpScreen> {
                                 Navigator.of(context).pop(); // tutup dialog
                                 if (result == 1) {
                                   if (context.mounted) {
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (_) =>
+                                          const ModernSuccessDialog(),
+                                    );
+                                    await Future.delayed(
+                                        const Duration(seconds: 2));
+                                    Navigator.of(context)
+                                        .pop(); // tutup success dialog
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                           content: Text(
                                               'Pengajuan berhasil dikirim!')),
                                     );
                                     Navigator.pop(context);
-                                    // Reset form after submission
                                     provider.resetForm();
                                   }
                                 }
@@ -243,8 +238,7 @@ class _SkpScreenState extends State<SkpScreen> {
                                 );
                               } finally {
                                 setState(() {
-                                  _isSubmitting =
-                                      false; // Set submitting flag back to false
+                                  _isSubmitting = false;
                                 });
                               }
                             },
@@ -254,8 +248,7 @@ class _SkpScreenState extends State<SkpScreen> {
                             borderRadius: BorderRadius.circular(12)),
                       ),
                       child: _isSubmitting
-                          ? const CircularProgressIndicator(
-                              color: Colors.white) // Show loading indicator
+                          ? const ModernBtnLoading()
                           : const Text(
                               'Ajukan',
                               style: TextStyle(
@@ -278,7 +271,6 @@ class _SkpScreenState extends State<SkpScreen> {
       KartuKeluargaProvider kkProvider) {
     final anggotaList = kkProvider.data?.anggota ?? [];
 
-    // Buat list item dropdown dari anggota KK
     final dropdownItems = anggotaList.asMap().entries.map((entry) {
       final index = entry.key;
       final anggota = entry.value;
@@ -307,8 +299,6 @@ class _SkpScreenState extends State<SkpScreen> {
         onChanged: (value) {
           if (value != null && kkProvider.data != null) {
             final selectedAnggota = kkProvider.data!.anggota[value];
-
-            // Panggil method baru untuk set data otomatis
             provider.setSelectedNik(
               value,
               selectedAnggota.id,
@@ -379,8 +369,8 @@ class _SkpScreenState extends State<SkpScreen> {
         hint: const Text(
           'Pilih salah satu',
           style: TextStyle(
-            color: Colors.grey, // sama seperti kode 2
-            fontWeight: FontWeight.normal, // disamakan
+            color: Colors.grey,
+            fontWeight: FontWeight.normal,
           ),
         ),
         items: items.map((e) {
@@ -430,6 +420,132 @@ class _SkpScreenState extends State<SkpScreen> {
                 ]
               : [],
         ),
+      ),
+    );
+  }
+}
+
+/// Widget loading modern (putar animasi + text)
+class ModernLoadingDialog extends StatelessWidget {
+  const ModernLoadingDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      elevation: 6,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      backgroundColor: Colors.white,
+      content: Row(
+        children: [
+          const ModernLoadingWidget(),
+          const SizedBox(width: 24),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Mengirim data...',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: fbackgroundColor4,
+                        fontSize: 16)),
+                const SizedBox(height: 6),
+                Text(
+                  'Mohon tunggu sebentar, data sedang diproses.',
+                  style: TextStyle(color: fbackgroundColor4.withOpacity(0.8)),
+                  maxLines: 2,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Widget loading circle modern
+class ModernLoadingWidget extends StatelessWidget {
+  const ModernLoadingWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 32,
+      height: 32,
+      child: CircularProgressIndicator(
+        strokeWidth: 4,
+        valueColor: AlwaysStoppedAnimation<Color>(fbackgroundColor4),
+        backgroundColor: fbackgroundColor4.withOpacity(0.15),
+      ),
+    );
+  }
+}
+
+/// Widget loading untuk tombol
+class ModernBtnLoading extends StatelessWidget {
+  const ModernBtnLoading({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 22,
+          height: 22,
+          child: CircularProgressIndicator(
+            strokeWidth: 2.5,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+        ),
+        const SizedBox(width: 10),
+        const Text(
+          'Mengirim...',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        )
+      ],
+    );
+  }
+}
+
+/// Dialog selesai modern
+class ModernSuccessDialog extends StatelessWidget {
+  const ModernSuccessDialog({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      elevation: 8,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      backgroundColor: Colors.white,
+      content: Row(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: fbackgroundColor4.withOpacity(0.12),
+              shape: BoxShape.circle,
+            ),
+            padding: const EdgeInsets.all(8),
+            child: Icon(
+              Icons.check_circle_rounded,
+              color: fbackgroundColor4,
+              size: 38,
+            ),
+          ),
+          const SizedBox(width: 20),
+          Expanded(
+            child: Text(
+              "Pengajuan berhasil dikirim!",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: fbackgroundColor4,
+                  fontSize: 16),
+            ),
+          ),
+        ],
       ),
     );
   }

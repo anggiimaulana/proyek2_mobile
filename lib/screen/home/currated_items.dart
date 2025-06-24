@@ -1,12 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:proyek2/data/models/berita/berita_models.dart';
+import 'package:proyek2/data/models/berita/berita_home_model.dart';
+import 'package:provider/provider.dart';
+import 'package:proyek2/provider/berita/berita_home_provider.dart';
 
-class CurratedItems extends StatelessWidget {
-  final Berita beritaItems;
+class CurratedItems extends StatefulWidget {
+  final Datum beritaItems;
   const CurratedItems({
     super.key,
     required this.beritaItems,
   });
+
+  @override
+  State<CurratedItems> createState() => _CurratedItemsState();
+}
+
+class _CurratedItemsState extends State<CurratedItems> {
+  BeritaHomeProvider? _provider;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Simpan reference ke provider saat widget masih aktif
+    _provider = Provider.of<BeritaHomeProvider>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    _provider = null; // Clear reference saat dispose
+    super.dispose();
+  }
 
   String getShortDescription(String text, int maxLength) {
     return text.length > maxLength
@@ -16,6 +38,12 @@ class CurratedItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Gunakan provider yang sudah disimpan, bukan context.read
+    final provider = _provider;
+    if (provider == null) {
+      return Container(); // Return empty container jika provider null
+    }
+
     return Container(
       color: const Color(0xFFF1F5FF),
       child: Column(
@@ -26,7 +54,8 @@ class CurratedItems extends StatelessWidget {
               borderRadius: BorderRadius.circular(25),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(beritaItems.image),
+                image: NetworkImage(
+                    provider.getImageUrl(widget.beritaItems.gambar)),
               ),
             ),
             height: 165,
@@ -43,7 +72,7 @@ class CurratedItems extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 5),
                     child: Text(
-                      beritaItems.name,
+                      widget.beritaItems.judul,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -54,7 +83,7 @@ class CurratedItems extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    getShortDescription(beritaItems.description, 50),
+                    getShortDescription(widget.beritaItems.isi, 50),
                     style: const TextStyle(
                       fontWeight: FontWeight.w300,
                       fontSize: 14,

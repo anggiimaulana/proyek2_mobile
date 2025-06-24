@@ -5,13 +5,57 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:proyek2/data/models/informasi_umum/kartu_keluarga_detail.dart';
+import 'package:proyek2/data/models/pengaduan/api_response.dart';
+import 'package:proyek2/data/models/pengaduan/pagination.dart';
+import 'package:proyek2/data/models/pengaduan/pengaduan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:proyek2/data/models/client/client_detail.dart';
 
 class ApiServices {
-  static const String baseUrl = "https://6a13-103-149-71-10.ngrok-free.app/api";
+  static const String baseUrl = "http://srv847399.hstgr.cloud/api";
 
-  static const String baseUrl2 = "https://6a13-103-149-71-10.ngrok-free.app";
+  static const String baseUrl2 = "http://srv847399.hstgr.cloud";
+
+  static const String urlBansos = "http://192.168.102.1/flutter_api/";
+
+  static Future<String?> _getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('token');
+  }
+
+  static Future<Map<String, String>> _getHeaders() async {
+    final token = await _getToken(); // sekarang ini valid
+    return {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      if (token != null) 'Authorization': 'Bearer $token',
+    };
+  }
+
+  static Future<ApiResponse<PaginatedData<Pengaduan>>> getPengaduanByUser(
+      int userId,
+      {int page = 1}) async {
+    try {
+      final headers = await _getHeaders();
+      final response = await http.get(
+        Uri.parse('$baseUrl/pengaduan/$userId?page=$page'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+        return ApiResponse.fromJson(
+          jsonResponse,
+          (data) =>
+              PaginatedData.fromJson(data, (item) => Pengaduan.fromJson(item)),
+        );
+      } else {
+        throw Exception('Failed to load pengaduan: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Network error: $e');
+    }
+  }
 
   Future<bool> apiLogout(String token) async {
     final url = Uri.parse('$baseUrl/client/logout');
@@ -77,11 +121,6 @@ class ApiServices {
       printTime: true,
     ),
   );
-
-  Future<String?> _getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
-  }
 
   // Get user ID from SharedPreferences
   Future<String?> getUserIdFromPrefs() async {
