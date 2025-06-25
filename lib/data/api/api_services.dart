@@ -16,7 +16,7 @@ class ApiServices {
 
   static const String baseUrl2 = "http://srv847399.hstgr.cloud";
 
-  static const String urlBansos = "http://192.168.102.1/flutter_api/";
+  static const String urlBansos = "http://srv847399.hstgr.cloud/flutter_api/";
 
   static Future<String?> _getToken() async {
     final prefs = await SharedPreferences.getInstance();

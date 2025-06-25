@@ -6,31 +6,32 @@ class Pengaduan {
   const Pengaduan(this.langkah);
 }
 
+// Solusi: const list di luar class
+const List<Pengaduan> langkahPengaduan = [
+  Pengaduan('Masuk ke aplikasi dan pilih menu "Pilih Pengaduan".'),
+  Pengaduan('Pilih jenis pengaduan yang ingin Anda laporkan.'),
+  Pengaduan(
+      'Pastikan jenis layanan pengaduan sesuai dengan kategori masalah Anda, seperti: Sosial, Lingkungan, atau Infrastruktur.'),
+  Pengaduan('Klik pada pengaduan yang telah dipilih.'),
+  Pengaduan(
+      'Isi formulir pengaduan dengan informasi yang diperlukan, seperti nama, dan data lainnya.'),
+  Pengaduan(
+      'Pilih kategori pengaduan yang sesuai. Jika tidak tersedia, Anda dapat memilih "Lainnya".'),
+  Pengaduan(
+      'Isi bagian Deskripsi dengan penjelasan lengkap mengenai aduan yang ingin Anda sampaikan.'),
+  Pengaduan('Lengkapi juga informasi pada bagian Lokasi Kejadian.'),
+  Pengaduan(
+      'Pastikan Anda memiliki bukti pendukung berupa foto terkait laporan yang dibuat.'),
+  Pengaduan(
+      'Periksa kembali data yang telah diisi, lalu klik tombol "Laporkan".'),
+  Pengaduan(
+      'Laporan Anda berhasil dikirim. Silakan tunggu tindak lanjut dari petugas.'),
+  Pengaduan(
+      'Anda dapat memantau status pengaduan melalui menu "Riwayat Pelaporan".'),
+];
+
 class BantuanScreen extends StatelessWidget {
   const BantuanScreen({Key? key}) : super(key: key);
-
-  final List<Pengaduan> langkahPengaduan = const [
-    Pengaduan('Masuk ke aplikasi dan pilih menu "Pilih Pengaduan".'),
-    Pengaduan('Pilih jenis pengaduan yang ingin Anda laporkan.'),
-    Pengaduan(
-        'Pastikan jenis layanan pengaduan sesuai dengan kategori masalah Anda, seperti: Sosial, Lingkungan, atau Infrastruktur.'),
-    Pengaduan('Klik pada pengaduan yang telah dipilih.'),
-    Pengaduan(
-        'Isi formulir pengaduan dengan informasi yang diperlukan, seperti nama, dan data lainnya.'),
-    Pengaduan(
-        'Pilih kategori pengaduan yang sesuai. Jika tidak tersedia, Anda dapat memilih "Lainnya".'),
-    Pengaduan(
-        'Isi bagian Deskripsi dengan penjelasan lengkap mengenai aduan yang ingin Anda sampaikan.'),
-    Pengaduan('Lengkapi juga informasi pada bagian Lokasi Kejadian.'),
-    Pengaduan(
-        'Pastikan Anda memiliki bukti pendukung berupa foto terkait laporan yang dibuat.'),
-    Pengaduan(
-        'Periksa kembali data yang telah diisi, lalu klik tombol "Laporkan".'),
-    Pengaduan(
-        'Laporan Anda berhasil dikirim. Silakan tunggu tindak lanjut dari petugas.'),
-    Pengaduan(
-        'Anda dapat memantau status pengaduan melalui menu "Riwayat Pelaporan".'),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -47,70 +48,68 @@ class BantuanScreen extends StatelessWidget {
               fontSize: 18,
             ),
           )),
-      body: Expanded(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 248, 246, 246),
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 8,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Panduan Pelaporan',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: fbackgroundColor4,
-                        fontSize: 18,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      'Ikuti langkah-langkah berikut untuk memastikan laporan Anda terkirim dengan benar.',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                    ),
-                  ],
-                ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 248, 246, 246),
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
               ),
-              const SizedBox(height: 20),
-              Text(
-                'Langkah-langkah Pelaporan:',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: fbackgroundColor4,
-                  fontSize: 18,
-                  letterSpacing: 0.4,
-                ),
+              child: Column(
+                children: [
+                  Text(
+                    'Panduan Pelaporan',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: fbackgroundColor4,
+                      fontSize: 18,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    'Ikuti langkah-langkah berikut untuk memastikan laporan Anda terkirim dengan benar.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                  ),
+                ],
               ),
-              const SizedBox(height: 12),
-              Column(
-                children: langkahPengaduan.asMap().entries.map((entry) {
-                  final index = entry.key + 1;
-                  final item = entry.value;
-                  return _StepCard(
-                    number: index,
-                    text: item.langkah,
-                  );
-                }).toList(),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Langkah-langkah Pelaporan:',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: fbackgroundColor4,
+                fontSize: 18,
+                letterSpacing: 0.4,
               ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 12),
+            Column(
+              children: langkahPengaduan.asMap().entries.map((entry) {
+                final index = entry.key + 1;
+                final item = entry.value;
+                return _StepCard(
+                  number: index,
+                  text: item.langkah,
+                );
+              }).toList(),
+            ),
+          ],
         ),
       ),
     );

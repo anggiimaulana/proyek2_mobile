@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyek2/screen/pengajuan/bantuan_surat_screen.dart';
 import 'package:proyek2/screen/pengajuan/surat_card.dart';
 import 'package:proyek2/data/models/pengajuan/surat/surat_list.dart';
 
@@ -8,11 +9,11 @@ class BuatSuratScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0), 
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Column(
         children: [
           const Padding(
-            padding: EdgeInsets.only(top: 10.0), 
+            padding: EdgeInsets.only(top: 10.0),
             child: Align(
               alignment: Alignment.center,
               child: Text(
@@ -34,8 +35,30 @@ class BuatSuratScreen extends StatelessWidget {
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
               ),
-              itemCount: suratList.length,
+              itemCount: suratList.length + 1, // +1 untuk card panduan
               itemBuilder: (context, index) {
+                // Jika index terakhir, tampilkan card panduan
+                if (index == suratList.length) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const BantuanSuratScreen(),
+                        ),
+                      );
+                    },
+                    child: const SuratCard(
+                      title: "Panduan Pengajuan",
+                      subtitle: "Cara mengajukan surat keterangan",
+                      iconPath:
+                          "assets/icons/sks_icon.png", // Sesuaikan dengan icon yang ada
+                      colorHex: "50C878", // Warna hijau untuk panduan (tanpa #)
+                    ),
+                  );
+                }
+
+                // Jika bukan index terakhir, tampilkan card surat biasa
                 final surat = suratList[index];
                 return GestureDetector(
                   onTap: () {
