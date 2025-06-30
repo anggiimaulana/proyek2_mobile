@@ -17,12 +17,6 @@ class PengaduanScreen extends StatelessWidget {
         'target': const BuatLaporanScreen(),
       },
       {
-        'icon': Icons.sticky_note_2,
-        'label': 'Tata Cara\nPelaporan',
-        'gradient': [fbackgroundColor3, fbackgroundColor3],
-        'target': const BantuanScreen(),
-      },
-      {
         'icon': Icons.workspace_premium_sharp,
         'label': 'Riwayat\nPelaporan',
         'gradient': [fbackgroundColor3, fbackgroundColor3],
@@ -69,16 +63,16 @@ class PengaduanScreen extends StatelessWidget {
                       fontWeight: FontWeight.w900,
                       color: fbackgroundColor4,
                       fontSize: 22,
-                      letterSpacing: 0.5,
                     ),
                   ),
                   const SizedBox(height: 10),
                   const Text(
                     'Laporkan masalahmu sekarang demi kebaikan bersama. Kami siap mendengar dan membantu.',
                     style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w600),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.black54,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   GridView.builder(
@@ -114,6 +108,42 @@ class PengaduanScreen extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: SizedBox(
+        width: 72,
+        height: 72,
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const BantuanScreen(),
+              ),
+            );
+          },
+          backgroundColor: fbackgroundColor4, // Warna background4
+          elevation: 4,
+          child: const Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.menu_book,
+                color: Colors.white,
+                size: 25,
+              ),
+              SizedBox(height: 2),
+              Text(
+                "Panduan",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
