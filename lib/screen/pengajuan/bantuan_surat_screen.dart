@@ -14,7 +14,7 @@ class BantuanSuratScreen extends StatelessWidget {
     Pengajuan(
         'Pilih kategori "Buat Surat" untuk mengajukan surat baru, atau "Tracking Surat" untuk memantau status pengajuan Anda.'),
     Pengajuan(
-        'Pilih jenis surat yang ingin diajukan. Terdapat berbagai jenis surat yang tersedia seperti: Surat Keterangan Tidak Mampu, Surat Keterangan Penghasilan Orang Tua, Surat Keterangan Status, Surat Keterangan Belum Menikah, Surat Keterangan Pekerjaan, dan Surat Keterangan Usaha.'),
+        'Pilih jenis surat yang ingin diajukan. Terdapat berbagai jenis surat yang tersedia seperti:\n• Surat Keterangan Tidak Mampu\n• Surat Keterangan Penghasilan Orang Tua\n• Surat Keterangan Status\n• Surat Keterangan Belum Menikah\n• Surat Keterangan Pekerjaan, dan\n• Surat Keterangan Usaha.'),
     Pengajuan(
         'Lengkapi formulir pengajuan surat dengan mengisi semua data yang diperlukan sesuai dengan jenis surat yang dipilih.'),
     Pengajuan(
@@ -61,11 +61,11 @@ class BantuanSuratScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: const Color.fromARGB(255, 248, 246, 246),
                 borderRadius: BorderRadius.circular(16),
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
                     color: Colors.black12,
                     blurRadius: 8,
-                    offset: const Offset(0, 4),
+                    offset: Offset(0, 4),
                   ),
                 ],
               ),
@@ -85,14 +85,14 @@ class BantuanSuratScreen extends StatelessWidget {
                   Text(
                     'Ikuti langkah-langkah berikut untuk mengajukan surat keterangan secara digital dan memantau status pengajuan Anda dengan mudah.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                    style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                   ),
                 ],
               ),
             ),
             const SizedBox(height: 20),
             Text(
-              'Langkah-langkah Pengajuan dan Tracking:',
+              'Langkah-langkah pengajuan dan tracking (pelacakan) surat:',
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 color: fbackgroundColor4,
@@ -133,11 +133,11 @@ class _StepCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: const Color.fromARGB(255, 248, 246, 246),
           borderRadius: BorderRadius.circular(14),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black12,
               blurRadius: 6,
-              offset: const Offset(0, 4),
+              offset: Offset(0, 4),
             ),
           ],
         ),

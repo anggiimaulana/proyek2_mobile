@@ -83,7 +83,7 @@ class BantuanScreen extends StatelessWidget {
                   Text(
                     'Ikuti langkah-langkah berikut untuk memastikan laporan Anda terkirim dengan benar.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+                    style: TextStyle(fontSize: 14, color: Colors.grey[700]),
                   ),
                 ],
               ),
